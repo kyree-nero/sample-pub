@@ -39,7 +39,7 @@ public class JdbcJndiTestSupport {
 				+ "REFERENTIAL_INTEGRITY=TRUE");
 		dataSource.setDriverProperties(properties);
 		
-		context.bind("jdbc/dataSource", dataSource);
+		context.bind("sampleDS", dataSource);
 		
 		AnnotationConfigContextLoader preLoadContextLoader = new AnnotationConfigContextLoader();
 		MergedContextConfiguration preloadContext = new MergedContextConfiguration(

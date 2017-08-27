@@ -13,7 +13,7 @@ import org.springframework.jdbc.datasource.lookup.JndiDataSourceLookup;
 
 @Configuration
 public class BasePersistenceConfiguration {
-@Value("jdbc/dataSource") String jndiName;
+@Value("sampleDS") String jndiName;
 	
 	@Bean public DataSource dataSource() {
 	    JndiDataSourceLookup lookup = new JndiDataSourceLookup();
