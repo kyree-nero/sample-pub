@@ -6,12 +6,14 @@ import org.springframework.context.annotation.Import;
 import sample.configuration.persistence.PersistenceConfiguration;
 import sample.configuration.services.ServicesConfiguration;
 import sample.configuration.web.WebConfiguration;
+import sample.configuration.web.security.WebSecurityConfiguration;
 
 @Configuration
 @Import({
 	PersistenceConfiguration.class, 
 	ServicesConfiguration.class, 
-	WebConfiguration.class})
+	WebConfiguration.class, 
+	WebSecurityConfiguration.class})
 
 public class ApplicationConfiguration {
 
