@@ -50,12 +50,42 @@
 			</dependency>
 			<dependency>
 				<groupId>org.springframework.security</groupId>
+				<artifactId>spring-security-test</artifactId>
+				<version>${spring.security.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework.security</groupId>
 				<artifactId>spring-security-config</artifactId>
 				<version>${spring.security.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.springframework</groupId>
+				<artifactId>spring-beans</artifactId>
+				<version>${spring.core.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-expression</artifactId>
+				<version>${spring.core.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
 				<artifactId>spring-context</artifactId>
+				<version>${spring.core.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-core</artifactId>
+				<version>${spring.core.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-orm</artifactId>
+				<version>${spring.core.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-aop</artifactId>
 				<version>${spring.core.version}</version>
 			</dependency>
 			<dependency>
@@ -83,6 +113,7 @@
 				<artifactId>javax.servlet-api</artifactId>
 				<version>3.0.1</version>
 			</dependency>
+			
 			<dependency>
 				<groupId>org.slf4j</groupId>
 				<artifactId>slf4j-api</artifactId>
@@ -263,10 +294,11 @@
 		</plugins>
 	</build>
 	<modules>
-		<module>../web-sample-application</module>
-		<module>../web-sample-persistence</module>
-		<module>../web-sample-services</module>
-		<module>../web-sample-webmvc</module>
-		<module>../web-sample-test</module>
+		<module>web-sample-application</module>
+		<module>web-sample-persistence</module>
+		<module>web-sample-services</module>
+		<module>web-sample-webmvc</module>
+		<module>web-sample-test</module>
+		<module>web-sample-webfilters</module>
 	</modules>
 </project>
