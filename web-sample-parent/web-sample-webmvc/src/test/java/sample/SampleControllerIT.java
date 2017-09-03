@@ -7,7 +7,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-public class SampleControllerIT extends AbstractIT{
+public class SampleControllerIT extends WebMvcAbstractIT{
 	@Test public void test() throws Exception {
 		MvcResult result = mockMvc.perform(
 				MockMvcRequestBuilders.get("/read", new Object[] {})

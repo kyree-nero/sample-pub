@@ -21,7 +21,7 @@ import sample.configuration.web.WebConfiguration;
 		}
 )
 @WebAppConfiguration 
-public abstract class AbstractIT extends WebMvcAbstractIT{
+public abstract class WebMvcAbstractIT extends PersistenceAbstractIT{
 	protected MockMvc mockMvc;
 	@Autowired WebApplicationContext webApplicationContext;
 	

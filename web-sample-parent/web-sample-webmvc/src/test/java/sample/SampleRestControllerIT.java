@@ -8,7 +8,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
   
 
-public class SampleRestControllerIT extends AbstractIT{
+public class SampleRestControllerIT extends WebMvcAbstractIT{
 	
 	
 	@Test public void test() throws Exception {
