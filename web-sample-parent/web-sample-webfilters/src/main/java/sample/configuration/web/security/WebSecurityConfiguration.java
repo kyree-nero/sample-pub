@@ -34,7 +34,8 @@ public class WebSecurityConfiguration  extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http	
+		http
+		
 			.formLogin().disable()
 			.authenticationProvider(authenticationProvider())
 			.addFilterBefore(authenticatingFilter(), UsernamePasswordAuthenticationFilter.class)
@@ -43,6 +44,38 @@ public class WebSecurityConfiguration  extends WebSecurityConfigurerAdapter {
 		;
 		
 		
+		http
+			.headers()
+					/*
+					 * https://spring.io/blog/2013/08/23/spring-security-3-2-0-rc1-highlights-security-headers
+					 * 
+					 * Content sniffing can be disabled by adding the following header to our response:
+					 */
+				.contentTypeOptions()
+				.and()
+				.frameOptions()
+					/*
+					 * https://spring.io/blog/2013/08/23/spring-security-3-2-0-rc1-highlights-security-headers
+					 * 
+					 * Allowing your website to be added to a frame can be a security issue. For example, using 
+					 * clever CSS styling users could be tricked into clicking on something that they were not 
+					 * intending (video demo). For example, a user that is logged into their bank might click a 
+					 * button that grants access to other users. This sort of attack is known as Clickjacking.
+					 */
+					.deny()  
+					/*
+					 * https://spring.io/blog/2013/08/23/spring-security-3-2-0-rc1-highlights-security-headers
+					 * 
+					 * Some browsers have built in support for filtering out reflected XSS attacks. This is by no means full proof, but does assist in XSS protection.
+
+						The filtering is typically enabled by default, so adding the header typically just ensures 
+						it is enabled and instructs the browser what to do when a XSS attack is detected. For example, 4
+						the filter might try to change the content in the least invasive way to still render everything. 
+						At times, this type of replacement can become a XSS vulnerability in itself. Instead, it 
+						is best to block the content rather than attempt to fix it. To do this we can add the following header:
+					 */
+					.xssProtection() 
+					;
 	}
 	
 	
