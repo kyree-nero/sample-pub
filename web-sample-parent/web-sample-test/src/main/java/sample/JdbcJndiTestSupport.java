@@ -40,13 +40,15 @@ public class JdbcJndiTestSupport {
 		dataSource.setDriverProperties(properties);
 		
 		context.bind("sampleDS", dataSource);
-		
+
+		/*
+		 * init a small context to load the static jdbc information
+		 */
 		AnnotationConfigContextLoader preLoadContextLoader = new AnnotationConfigContextLoader();
 		MergedContextConfiguration preloadContext = new MergedContextConfiguration(
 				JdbcJndiTestSupport.class, 
 				new String[] {}, 
 				new Class<?>[] {
-					BasePersistenceConfiguration.class, 
 					JDBCInitializationConfiguration.class
 				},
 				new String[] {}, preLoadContextLoader); 
