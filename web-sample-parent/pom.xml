@@ -7,7 +7,7 @@
 	<packaging>pom</packaging>
 	<properties>
 		<jdk.version>1.8</jdk.version>
-		<spring.core.version>4.2.9.RELEASE</spring.core.version>
+		<spring.core.version>4.3.9.RELEASE</spring.core.version>
 		<spring.security.version>4.2.3.RELEASE</spring.security.version>
 		<hibernate.core.version>5.2.10.Final</hibernate.core.version>
 	</properties>

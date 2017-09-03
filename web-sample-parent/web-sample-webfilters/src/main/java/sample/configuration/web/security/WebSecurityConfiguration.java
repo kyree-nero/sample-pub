@@ -12,14 +12,13 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.authority.mapping.SimpleAttributes2GrantedAuthoritiesMapper;
 import org.springframework.security.core.authority.mapping.SimpleMappableAttributesRetriever;
 import org.springframework.security.core.userdetails.AuthenticationUserDetailsService;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationProvider;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedGrantedAuthoritiesUserDetailsService;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedGrantedAuthoritiesWebAuthenticationDetails;
 import org.springframework.security.web.authentication.preauth.j2ee.J2eeBasedPreAuthenticatedWebAuthenticationDetailsSource;
 import org.springframework.security.web.authentication.preauth.j2ee.J2eePreAuthenticatedProcessingFilter;
+import org.springframework.security.web.authentication.switchuser.SwitchUserFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -38,7 +37,8 @@ public class WebSecurityConfiguration  extends WebSecurityConfigurerAdapter {
 		
 			.formLogin().disable()
 			.authenticationProvider(authenticationProvider())
-			.addFilterBefore(authenticatingFilter(), UsernamePasswordAuthenticationFilter.class)
+			.addFilter(preAuthenticatedProcessingFilter())
+		
 			.authorizeRequests().anyRequest().authenticated()
 			
 		;
@@ -80,7 +80,12 @@ public class WebSecurityConfiguration  extends WebSecurityConfigurerAdapter {
 	
 	
 	
-	
+	@Bean J2eePreAuthenticatedProcessingFilter preAuthenticatedProcessingFilter() throws Exception{
+		J2eePreAuthenticatedProcessingFilter bean = new J2eePreAuthenticatedProcessingFilter();
+		bean.setAuthenticationManager(authenticationManagerBean());
+		bean.setAuthenticationDetailsSource(authenticationDetailsSource());
+		return bean;
+	}
 
 	@Bean PreAuthenticatedAuthenticationProvider authenticationProvider() {
 		PreAuthenticatedAuthenticationProvider bean = new PreAuthenticatedAuthenticationProvider();
@@ -93,13 +98,7 @@ public class WebSecurityConfiguration  extends WebSecurityConfigurerAdapter {
 		PreAuthenticatedGrantedAuthoritiesUserDetailsService bean = new PreAuthenticatedGrantedAuthoritiesUserDetailsService();
 		return bean;
 	}
-	
-	@Bean J2eePreAuthenticatedProcessingFilter authenticatingFilter() throws Exception{
-		J2eePreAuthenticatedProcessingFilter bean = new J2eePreAuthenticatedProcessingFilter();
-		bean.setAuthenticationManager(authenticationManagerBean());
-		bean.setAuthenticationDetailsSource(authenticationDetailsSource());
-		return bean;
-	}
+
 	
 	@Bean AuthenticationDetailsSource<HttpServletRequest, PreAuthenticatedGrantedAuthoritiesWebAuthenticationDetails> authenticationDetailsSource(){
 		J2eeBasedPreAuthenticatedWebAuthenticationDetailsSource bean = new J2eeBasedPreAuthenticatedWebAuthenticationDetailsSource();

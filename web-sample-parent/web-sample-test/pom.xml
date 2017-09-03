@@ -9,6 +9,15 @@
 	</parent>
 	<dependencies>
 		<dependency>
+			    <groupId>com.jayway.jsonpath</groupId>
+			    <artifactId>json-path</artifactId>
+		</dependency>
+		<dependency>
+				<groupId>org.hamcrest</groupId>
+				<artifactId>hamcrest-library</artifactId>
+				
+		</dependency>
+		<dependency>
 			<groupId>org.codehaus.btm</groupId>
 			<artifactId>btm</artifactId>
 		</dependency>

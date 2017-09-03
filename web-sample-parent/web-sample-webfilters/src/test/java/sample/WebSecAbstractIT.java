@@ -4,6 +4,7 @@ import javax.servlet.Filter;
 
 import org.junit.Before;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.web.AnnotationConfigWebContextLoader;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -25,7 +26,7 @@ import sample.configuration.web.security.WebSecurityConfiguration;
 		}
 )
 @WebAppConfiguration 
-public abstract class AbstractIT extends PersistenceAbstractIT{
+public abstract class WebSecAbstractIT extends PersistenceAbstractIT{
 	protected MockMvc mockMvc;
 	@Autowired WebApplicationContext webApplicationContext;
 	@Autowired private Filter springSecurityFilterChain;
@@ -34,7 +35,8 @@ public abstract class AbstractIT extends PersistenceAbstractIT{
 	@Before public void before() {
 		mockMvc = MockMvcBuilders
 			.webAppContextSetup(webApplicationContext)
-			.addFilters(springSecurityFilterChain)
+			//.addFilters(springSecurityFilterChain)
+			.apply(SecurityMockMvcConfigurers.springSecurity()) 
 			.build();
 	}
 	
