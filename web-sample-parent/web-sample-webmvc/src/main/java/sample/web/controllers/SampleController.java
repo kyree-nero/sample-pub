@@ -17,4 +17,12 @@ public class SampleController {
 		
 		return "show";
 	}
+	
+	@RequestMapping("/generateException")
+	public String generateException(@ModelAttribute("sampleform") SampleForm sampleForm) {
+		if(1==1) {
+			throw new IllegalArgumentException("Sample exception");
+		}
+		return "show";
+	}
 }

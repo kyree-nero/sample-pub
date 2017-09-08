@@ -4,6 +4,7 @@ import java.util.HashSet;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationDetailsSource;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -12,6 +13,8 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.authority.mapping.SimpleAttributes2GrantedAuthoritiesMapper;
 import org.springframework.security.core.authority.mapping.SimpleMappableAttributesRetriever;
 import org.springframework.security.core.userdetails.AuthenticationUserDetailsService;
+import org.springframework.security.web.AuthenticationEntryPoint;
+import org.springframework.security.web.authentication.Http403ForbiddenEntryPoint;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationProvider;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedGrantedAuthoritiesUserDetailsService;
@@ -20,8 +23,11 @@ import org.springframework.security.web.authentication.preauth.j2ee.J2eeBasedPre
 import org.springframework.security.web.authentication.preauth.j2ee.J2eePreAuthenticatedProcessingFilter;
 import org.springframework.security.web.authentication.switchuser.SwitchUserFilter;
 
+import sample.web.controller.exception.SampleControllerAdvice;
+
 @Configuration
 @EnableWebSecurity
+@ComponentScan(basePackageClasses=SampleControllerAdvice.class)
 public class WebSecurityConfiguration  extends WebSecurityConfigurerAdapter {
 
 //	@Autowired
@@ -43,6 +49,7 @@ public class WebSecurityConfiguration  extends WebSecurityConfigurerAdapter {
 			
 		;
 		
+		http.exceptionHandling().authenticationEntryPoint(authentionEntryPoint());
 		
 		http
 			.headers()
@@ -78,7 +85,9 @@ public class WebSecurityConfiguration  extends WebSecurityConfigurerAdapter {
 					;
 	}
 	
-	
+	@Bean AuthenticationEntryPoint authentionEntryPoint() {
+		return new Http403ForbiddenEntryPoint();
+	}
 	
 	@Bean J2eePreAuthenticatedProcessingFilter preAuthenticatedProcessingFilter() throws Exception{
 		J2eePreAuthenticatedProcessingFilter bean = new J2eePreAuthenticatedProcessingFilter();

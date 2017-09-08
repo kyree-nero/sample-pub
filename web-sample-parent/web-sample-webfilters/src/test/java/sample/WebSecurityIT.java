@@ -66,4 +66,15 @@ public class WebSecurityIT extends WebSecAbstractIT{
 		.andExpect(MockMvcResultMatchers.status().isForbidden())
 		.andReturn();
 	}
+	
+	@WithMockUser("user")
+	@Test public void testApplicationException() throws Exception {
+		MvcResult result = mockMvc.perform(
+				MockMvcRequestBuilders.get("/generateException", new Object[] {}))
+						
+		
+		.andExpect(MockMvcResultMatchers.status().isNotFound())
+		
+		.andReturn();
+	}
 }

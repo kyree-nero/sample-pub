@@ -12,8 +12,6 @@ public class SampleControllerIT extends WebMvcAbstractIT{
 		MvcResult result = mockMvc.perform(
 				MockMvcRequestBuilders.get("/read", new Object[] {})
 				.param("in", "a")
-//				.accept(MediaType.APPLICATION_JSON)
-//				.contentType(MediaType.APPLICATION_JSON)
 		
 		)
 		.andExpect(MockMvcResultMatchers.status().isOk())
@@ -22,4 +20,7 @@ public class SampleControllerIT extends WebMvcAbstractIT{
 		.andExpect(MockMvcResultMatchers.model().attribute("out", Matchers.anything()))
 		.andReturn();
 	}
+	
+	
+	
 }
