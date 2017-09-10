@@ -13,7 +13,7 @@ public class SampleRestControllerIT extends WebMvcAbstractIT{
 	
 	@Test public void test() throws Exception {
 		MvcResult result = mockMvc.perform(
-				MockMvcRequestBuilders.get("/restget", new Object[] {})
+				MockMvcRequestBuilders.get("/sample", new Object[] {})
 				.accept(MediaType.APPLICATION_JSON)
 				.contentType(MediaType.APPLICATION_JSON)
 				
@@ -21,6 +21,16 @@ public class SampleRestControllerIT extends WebMvcAbstractIT{
 		.andExpect(MockMvcResultMatchers.status().isOk())
 		.andExpect(MockMvcResultMatchers.jsonPath("data", Matchers.notNullValue()))
 		.andExpect(MockMvcResultMatchers.jsonPath("errors", Matchers.nullValue()))
+		.andReturn();
+	}
+	
+	@Test public void testApplicationException() throws Exception {
+		MvcResult result = mockMvc.perform(
+				MockMvcRequestBuilders.get("/generateException", new Object[] {}))
+						
+		
+		.andExpect(MockMvcResultMatchers.status().isNotFound())
+		
 		.andReturn();
 	}
 }

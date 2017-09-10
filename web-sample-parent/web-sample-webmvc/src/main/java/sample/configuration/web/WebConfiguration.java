@@ -10,10 +10,11 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 
 import sample.web.controllers.SampleRestController;
+import sample.web.controllers.exception.SampleControllerAdvice;
 
 @Configuration
 @EnableWebMvc
-@ComponentScan(basePackageClasses=SampleRestController.class)
+@ComponentScan(basePackageClasses= {SampleControllerAdvice.class, SampleRestController.class})
 public class WebConfiguration extends WebMvcConfigurerAdapter {
 
 	@Override

@@ -1,11 +1,19 @@
 package sample.configuration.web.security;
+import java.security.Principal;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.access.AccessDecisionManager;
+import org.springframework.security.access.AccessDecisionVoter;
+import org.springframework.security.access.vote.UnanimousBased;
 import org.springframework.security.authentication.AuthenticationDetailsSource;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -21,15 +29,14 @@ import org.springframework.security.web.authentication.preauth.PreAuthenticatedG
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedGrantedAuthoritiesWebAuthenticationDetails;
 import org.springframework.security.web.authentication.preauth.j2ee.J2eeBasedPreAuthenticatedWebAuthenticationDetailsSource;
 import org.springframework.security.web.authentication.preauth.j2ee.J2eePreAuthenticatedProcessingFilter;
-import org.springframework.security.web.authentication.switchuser.SwitchUserFilter;
 
-import sample.web.controller.exception.SampleControllerAdvice;
+import sample.services.AuthorizationService;
+import sample.web.security.PersistedExpressionVoter;
 
 @Configuration
 @EnableWebSecurity
-@ComponentScan(basePackageClasses=SampleControllerAdvice.class)
 public class WebSecurityConfiguration  extends WebSecurityConfigurerAdapter {
-
+	@Autowired AuthorizationService authorizationService;
 //	@Autowired
 //	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
 //	  auth.inMemoryAuthentication().withUser("user").password("123456").roles("USER");
@@ -45,7 +52,8 @@ public class WebSecurityConfiguration  extends WebSecurityConfigurerAdapter {
 			.authenticationProvider(authenticationProvider())
 			.addFilter(preAuthenticatedProcessingFilter())
 		
-			.authorizeRequests().anyRequest().authenticated()
+			//.authorizeRequests().anyRequest().authenticated()
+			.authorizeRequests().anyRequest().authenticated().accessDecisionManager(accessDecisionManager())
 			
 		;
 		
@@ -85,6 +93,19 @@ public class WebSecurityConfiguration  extends WebSecurityConfigurerAdapter {
 					;
 	}
 	
+	@Bean
+	public AccessDecisionManager accessDecisionManager() {
+	    List<AccessDecisionVoter<? extends Object>> decisionVoters 
+	      = Arrays.asList(
+//	        new WebExpressionVoter(),
+//	        new RoleVoter(),
+//	        new AuthenticatedVoter(),
+	        new PersistedExpressionVoter(authorizationService));
+	    UnanimousBased bean = new UnanimousBased(decisionVoters);
+	    bean.setAllowIfAllAbstainDecisions(true);
+	    return bean;
+	}
+	
 	@Bean AuthenticationEntryPoint authentionEntryPoint() {
 		return new Http403ForbiddenEntryPoint();
 	}
@@ -110,9 +131,25 @@ public class WebSecurityConfiguration  extends WebSecurityConfigurerAdapter {
 
 	
 	@Bean AuthenticationDetailsSource<HttpServletRequest, PreAuthenticatedGrantedAuthoritiesWebAuthenticationDetails> authenticationDetailsSource(){
-		J2eeBasedPreAuthenticatedWebAuthenticationDetailsSource bean = new J2eeBasedPreAuthenticatedWebAuthenticationDetailsSource();
+		class X extends J2eeBasedPreAuthenticatedWebAuthenticationDetailsSource{
+			protected Collection<String> getUserRoles(HttpServletRequest request) {
+				ArrayList<String> j2eeUserRolesList = new ArrayList<String>();
+				Principal p = request.getUserPrincipal();
+				for (String role : j2eeMappableRoles) {
+					if (request.isUserInRole(role)) {
+						j2eeUserRolesList.add(role);
+					}
+				}
+
+				return j2eeUserRolesList;
+			}
+		}
+		
+		J2eeBasedPreAuthenticatedWebAuthenticationDetailsSource bean = new X();//
+				//new J2eeBasedPreAuthenticatedWebAuthenticationDetailsSource();
 		bean.setMappableRolesRetriever(mappableRolesRetriever());
 		bean.setUserRoles2GrantedAuthoritiesMapper(userRoles2GrantedAuthoritiesMapper());
+		
 		return bean;
 	}
 	
@@ -123,7 +160,7 @@ public class WebSecurityConfiguration  extends WebSecurityConfigurerAdapter {
 	@Bean SimpleMappableAttributesRetriever mappableRolesRetriever() {
 		SimpleMappableAttributesRetriever bean = new SimpleMappableAttributesRetriever();
 		HashSet<String> roles = new HashSet<String>();
-		roles.add("USERS_ROLE");
+		roles.add("USERS");
 		bean.setMappableAttributes(roles);
 		return bean;
 	}

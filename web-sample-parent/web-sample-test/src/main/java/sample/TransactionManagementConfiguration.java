@@ -11,7 +11,7 @@ import bitronix.tm.BitronixTransactionManager;
 import bitronix.tm.TransactionManagerServices;
 
 @Configuration
-public class TransactionManagermentConfiguration {
+public class TransactionManagementConfiguration {
 	
 	private bitronix.tm.Configuration btmConfig(){
 		bitronix.tm.Configuration configuration = TransactionManagerServices.getConfiguration();

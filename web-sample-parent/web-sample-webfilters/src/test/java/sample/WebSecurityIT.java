@@ -21,12 +21,14 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 		}
 )
 public class WebSecurityIT extends WebSecAbstractIT{
+	
 	@Test public void testCSRF()throws Exception {
 		mockMvc
 	    .perform(
 	    		MockMvcRequestBuilders.post("/")
 	    			.with(SecurityMockMvcRequestPostProcessors.csrf()));
 	}
+	
 	@Test public void testClickJacking() throws Exception {
 		mockMvc
 	    .perform(
@@ -43,10 +45,10 @@ public class WebSecurityIT extends WebSecAbstractIT{
 	    		.string("X-XSS-Protection", "1; mode=block"));
 	}
 	
-	@WithMockUser("user")
+	@WithMockUser(value="user", roles="USERS")
 	@Test public void securedRequest() throws Exception{
 		MvcResult result = mockMvc.perform(
-				MockMvcRequestBuilders.get("/restget", new Object[] {})
+				MockMvcRequestBuilders.get("/sample", new Object[] {})
 				.accept(MediaType.APPLICATION_JSON)
 				.contentType(MediaType.APPLICATION_JSON)
 		)
@@ -57,9 +59,10 @@ public class WebSecurityIT extends WebSecAbstractIT{
 	}
 	
 	
-	@Test public void unsecuredRequest() throws Exception{
+	@WithMockUser(value="userNotInRole", roles="NONAUTHROLE")
+	@Test public void unAuthorizedRequest() throws Exception{
 		MvcResult result = mockMvc.perform(
-				MockMvcRequestBuilders.get("/restget", new Object[] {})
+				MockMvcRequestBuilders.get("/sample", new Object[] {})
 				.accept(MediaType.APPLICATION_JSON)
 				.contentType(MediaType.APPLICATION_JSON)
 		)
@@ -67,14 +70,16 @@ public class WebSecurityIT extends WebSecAbstractIT{
 		.andReturn();
 	}
 	
-	@WithMockUser("user")
-	@Test public void testApplicationException() throws Exception {
+	
+	@Test public void unAuthenticatedRequest() throws Exception{
 		MvcResult result = mockMvc.perform(
-				MockMvcRequestBuilders.get("/generateException", new Object[] {}))
-						
-		
-		.andExpect(MockMvcResultMatchers.status().isNotFound())
-		
+				MockMvcRequestBuilders.get("/sample", new Object[] {})
+				.accept(MediaType.APPLICATION_JSON)
+				.contentType(MediaType.APPLICATION_JSON)
+		)
+		.andExpect(MockMvcResultMatchers.status().isForbidden())
 		.andReturn();
 	}
+	
+	
 }

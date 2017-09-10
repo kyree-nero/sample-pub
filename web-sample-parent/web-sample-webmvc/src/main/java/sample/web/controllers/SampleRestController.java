@@ -14,7 +14,7 @@ public class SampleRestController {
 
 	@Autowired SampleService sampleService;
 	
-	 @RequestMapping(value="/restget", method = RequestMethod.GET)
+	 @RequestMapping(value="/sample", method = RequestMethod.GET)
 	 @ResponseBody
 	public SampleJsonResponse<String> sampleGet() {
 		 SampleJsonResponse<String> response = new SampleJsonResponse<String>();
