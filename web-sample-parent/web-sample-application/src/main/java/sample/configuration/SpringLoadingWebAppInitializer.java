@@ -1,4 +1,4 @@
-package sample.configuration.servlet;
+package sample.configuration;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -7,8 +7,6 @@ import java.util.Properties;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
-
-import sample.configuration.application.ApplicationConfiguration;
 
 public class SpringLoadingWebAppInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
 

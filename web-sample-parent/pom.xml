@@ -306,6 +306,6 @@
 		<module>web-sample-services</module>
 		<module>web-sample-webmvc</module>
 		<module>web-sample-test</module>
-		<module>web-sample-webfilters</module>
+<!-- 		<module>web-sample-webfilters</module> -->
 	</modules>
 </project>
