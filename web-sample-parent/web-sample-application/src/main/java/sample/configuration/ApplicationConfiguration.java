@@ -4,7 +4,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
 import sample.configuration.persistence.PersistenceConfiguration;
-import sample.configuration.services.ServicesConfiguration;
 
 @Configuration
 @Import({

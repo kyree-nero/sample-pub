@@ -303,7 +303,7 @@
 	<modules>
 		<module>web-sample-application</module>
 		<module>web-sample-persistence</module>
-		<module>web-sample-services</module>
+<!-- 		<module>web-sample-services</module> -->
 <!-- 		<module>web-sample-webmvc</module> -->
 		<module>web-sample-test</module>
 <!-- 		<module>web-sample-webfilters</module> -->

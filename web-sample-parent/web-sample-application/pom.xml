@@ -54,10 +54,10 @@
 		
 		
 		<dependency>
-			<groupId>scratch</groupId>
-			<artifactId>web-sample-services</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-		</dependency>
+	  		<groupId>scratch</groupId>
+	  		<artifactId>web-sample-persistence</artifactId>
+	  		<version>0.0.1-SNAPSHOT</version>
+	  	</dependency>
 		<dependency>
 			<groupId>scratch</groupId>
 			<artifactId>web-sample-test</artifactId>
