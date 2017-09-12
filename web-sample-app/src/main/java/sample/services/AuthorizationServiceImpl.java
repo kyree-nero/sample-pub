@@ -1,5 +1,7 @@
 package sample.services;
 
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,5 +17,10 @@ public class AuthorizationServiceImpl implements AuthorizationService{
 	@Transactional 
 	public AuthExpression findExpression(String key) {
 		return authExpressionRepository.findOne(key);
+	}
+
+	@Override
+	public List<AuthExpression> findAll() {
+		return authExpressionRepository.findAll();
 	}
 }

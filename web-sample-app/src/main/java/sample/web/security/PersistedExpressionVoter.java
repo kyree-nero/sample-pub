@@ -1,6 +1,7 @@
 package sample.web.security;
 
 import java.util.Collection;
+import java.util.List;
 
 import org.springframework.expression.EvaluationContext;
 import org.springframework.expression.Expression;
@@ -43,7 +44,10 @@ public class PersistedExpressionVoter implements AccessDecisionVoter<FilterInvoc
 		
 			FilterInvocation filterInvocation = (FilterInvocation)object;
 			
-			AuthExpression authExpression =  authorizationService.findExpression(filterInvocation.getRequestUrl());
+			AuthExpression authExpression =  findMatchingRequestUrlKey(filterInvocation.getRequestUrl());
+			if(authExpression == null) {
+				return ACCESS_DENIED;
+			}
 			String expressionAsString = authExpression.getPolicyExpression();
 			EvaluationContext expressionEvalContext = expressionHandler.createEvaluationContext(authentication, filterInvocation);
 			Expression expression = expressionHandler.getExpressionParser().parseExpression(expressionAsString);
@@ -55,5 +59,19 @@ public class PersistedExpressionVoter implements AccessDecisionVoter<FilterInvoc
 			}
 		
 	}
-
+	
+	private AuthExpression findMatchingRequestUrlKey(String url) {
+		
+		List<AuthExpression> authExpressions = authorizationService.findAll();
+		for(AuthExpression authExpression : authExpressions) {
+//			System.out.println("------");
+//			System.out.println("url=" + url);
+//			System.out.println("resource="+authExpression.getResource());
+			if(url.matches(authExpression.getResource())) {
+//				System.out.println("found");
+				return authExpression;
+			}
+		}
+		return null;
+	}
 }

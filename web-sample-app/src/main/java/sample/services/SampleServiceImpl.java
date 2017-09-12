@@ -1,5 +1,7 @@
 package sample.services;
 
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,10 +34,11 @@ public class SampleServiceImpl implements SampleService {
 	}
 
 	@Override
-	@Transactional()
+	@Transactional
 	public Sample findSample(Long id) {
-		
-		SampleEntry sampleEntry =  sampleEntryRepository.getOne(id);
+//		long i =sampleEntryRepository.count();
+//		List<SampleEntry> s = sampleEntryRepository.findAll();
+		SampleEntry sampleEntry =  sampleEntryRepository.findOne(id);
 		Sample sample = new Sample();
 		sample.setContent(sampleEntry.getContent());
 		sample.setId(sampleEntry.getId());

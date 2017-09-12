@@ -1,6 +1,7 @@
 package sample.web.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -15,15 +16,12 @@ public class SampleRestController {
 
 	@Autowired SampleService sampleService;
 	
-	 @RequestMapping(value="/sample", method = RequestMethod.GET) @ResponseBody
-	public SampleJsonResponse<Sample> sampleGet() {
+	@RequestMapping(value="/sample/{id}", method = RequestMethod.GET) @ResponseBody
+	public SampleJsonResponse<Sample> sampleGet( @PathVariable("id") long id) {
 		 System.out.println("in service");
 		 SampleJsonResponse<Sample> response = new SampleJsonResponse<Sample>();
-		 Sample sample = sampleService.findSample(1L);
+		 Sample sample = sampleService.findSample(id);
 		 response.setData(sample);
-		 
-		 sampleService.doStuff();
-		 sampleService.findCountInDb();
 		 return response;
 	 }
 	 

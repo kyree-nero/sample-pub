@@ -7,10 +7,10 @@ import javax.persistence.Table;
 
 
 @Entity
-@Table(name = "sample")
+@Table(name = "SAMPLE")
 public class SampleEntry {
-	@Id @Column(name="id") private Long id;
-	@Column String content;
+	@Id @Column(name="ID") private Long id;
+	@Column(name="CONTENT") String content;
 	
 	
 	public Long getId() {

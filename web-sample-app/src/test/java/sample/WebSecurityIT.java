@@ -48,7 +48,7 @@ public class WebSecurityIT extends WebSecAbstractIT{
 	@WithMockUser(value="user", roles="USERS")
 	@Test public void securedRequest() throws Exception{
 		MvcResult result = mockMvc.perform(
-				MockMvcRequestBuilders.get("/sample", new Object[] {})
+				MockMvcRequestBuilders.get("/sample/1", new Object[] {})
 				.accept(MediaType.APPLICATION_JSON)
 				.contentType(MediaType.APPLICATION_JSON)
 		)
