@@ -1,0 +1,33 @@
+<web-app 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://java.sun.com/xml/ns/javaee"
+	xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+						http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" 
+	id="WebApp_ID" 
+	version="3.0">
+	
+	<display-name>Sample Web Application</display-name>
+
+	<security-constraint>
+		<web-resource-collection>
+			<web-resource-name>All</web-resource-name>
+			<url-pattern>/*</url-pattern>
+		</web-resource-collection>
+	
+		<auth-constraint>
+			<role-name>USERS</role-name>
+		</auth-constraint>
+		
+		
+	</security-constraint>
+	
+	<security-role>
+		<role-name>USERS</role-name>		
+	</security-role>
+
+	<login-config>
+		<auth-method>BASIC</auth-method>
+		<realm-name>ApplicationRealm</realm-name>
+	</login-config>
+</web-app>
