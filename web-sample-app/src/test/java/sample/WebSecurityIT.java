@@ -53,8 +53,9 @@ public class WebSecurityIT extends WebSecAbstractIT{
 				.contentType(MediaType.APPLICATION_JSON)
 		)
 		.andExpect(MockMvcResultMatchers.status().isOk())
-		.andExpect(MockMvcResultMatchers.jsonPath("data", Matchers.notNullValue()))
-		.andExpect(MockMvcResultMatchers.jsonPath("errors", Matchers.nullValue()))
+//		.andExpect(MockMvcResultMatchers.jsonPath("data", Matchers.notNullValue()))
+//		.andExpect(MockMvcResultMatchers.jsonPath("errors", Matchers.nullValue()))
+		.andExpect(MockMvcResultMatchers.jsonPath("id", Matchers.notNullValue()))
 		.andReturn();
 	}
 	

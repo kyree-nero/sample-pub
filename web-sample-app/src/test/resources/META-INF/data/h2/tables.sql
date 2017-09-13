@@ -1,6 +1,7 @@
 CREATE TABLE SAMPLE (
 	 id INT not null, 
-	 content VARCHAR(100) not null
+	 content VARCHAR(100) not null,
+	 version INT not null,
 ); 
 
 CREATE TABLE AUTH_EXPR(

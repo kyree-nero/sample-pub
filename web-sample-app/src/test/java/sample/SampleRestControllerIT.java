@@ -5,6 +5,7 @@ import org.junit.Test;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
   
 
@@ -18,9 +19,12 @@ public class SampleRestControllerIT extends WebMvcAbstractIT{
 				.contentType(MediaType.APPLICATION_JSON)
 				
 		)
+				.andDo(MockMvcResultHandlers.print())
 		.andExpect(MockMvcResultMatchers.status().isOk())
-		.andExpect(MockMvcResultMatchers.jsonPath("data", Matchers.notNullValue()))
-		.andExpect(MockMvcResultMatchers.jsonPath("errors", Matchers.nullValue()))
+		.andExpect(MockMvcResultMatchers.jsonPath("id", Matchers.notNullValue()))
+		//.andExpect(MockMvcResultMatchers.jsonPath("data", Matchers.notNullValue()))
+		//.andExpect(MockMvcResultMatchers.jsonPath("errors", Matchers.nullValue()))
+		
 		.andReturn();
 	}
 	

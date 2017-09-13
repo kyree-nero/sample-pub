@@ -7,4 +7,5 @@ public interface SampleService {
 	public Long findCountInDb();
 	public Long findCountInDb2();
 	public Sample findSample(Long id);
+	public Sample save(Sample sample);
 }

@@ -2,6 +2,7 @@ package sample.configuration;
 
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
 import sample.services.SampleServiceImpl;
 
@@ -9,5 +10,7 @@ import sample.services.SampleServiceImpl;
 @ComponentScan(basePackageClasses= {SampleServiceImpl.class})
 
 public class ServicesConfiguration {
-
+	public LocalValidatorFactoryBean validator() {
+		return new LocalValidatorFactoryBean();
+	}
 }
