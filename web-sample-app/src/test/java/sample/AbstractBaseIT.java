@@ -1,4 +1,4 @@
-package sample.configuration;
+package sample;
 
 
 import org.junit.runner.RunWith;
