@@ -343,10 +343,20 @@
 				<version>2.2</version>
 				<configuration>
 					<failOnMissingWebXml>false</failOnMissingWebXml>
+					<webResources>
+						<webResource>
+	                        <directory>${basedir}/src/main/webapp</directory>
+	                        <filtering>true</filtering>
+	                    </webResource>
+						<webResource>
+	                        <directory>${basedir}/src/main/${build-profile-id}/webapp</directory>
+	                        <filtering>true</filtering>
+	                    </webResource>
+						
+					</webResources>
 				</configuration>
 				<executions>
 					<execution>
-
 						<id>default-war</id>
 						<phase>package</phase>
 						<goals>
@@ -364,13 +374,17 @@
 			<activation>
 				<activeByDefault>false</activeByDefault>
 			</activation>
+			<properties>
+				<build-profile-id>local</build-profile-id>
+			</properties>
 			<build>
+				
 				<resources>
 					<resource>
 						<directory>src/main/resources</directory>
 					</resource>
 					<resource>
-						<directory>src/main/local/resources</directory>
+						<directory>src/main/${profile.id}/resources</directory>
 					</resource>
 				</resources>
 
@@ -381,13 +395,16 @@
 			<activation>
 				<activeByDefault>true</activeByDefault>
 			</activation>
+			<properties>
+				<build-profile-id>server</build-profile-id>
+			</properties>
 			<build>
 				<resources>
 					<resource>
 						<directory>src/main/resources</directory>
 					</resource>
 					<resource>
-						<directory>src/main/server/resources</directory>
+						<directory>src/main/${profile.id}/resources</directory>
 					</resource>
 				</resources>
 
