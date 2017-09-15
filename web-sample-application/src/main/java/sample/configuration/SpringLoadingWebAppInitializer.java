@@ -26,8 +26,18 @@ public class SpringLoadingWebAppInitializer extends AbstractAnnotationConfigDisp
 		return new String[] {"/"};
 	}
 	
-	
-
+	/*
+	 * 
+	 * (non-Javadoc)
+	 * 
+	 * This is helpful when using profiles in the real world.  All you need to is put a
+	 * servlet.properties file in a maven profile configured directory and this will pick it 
+	 * up and set the intended spring profile(s).  With out a file like in this sample 
+	 * project no profile will be set as expected.
+	 * 
+	 * 
+	 * @see org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer#createRootApplicationContext()
+	 */
 	@Override
 	protected WebApplicationContext createRootApplicationContext() {
 		WebApplicationContext context = super.createRootApplicationContext();
