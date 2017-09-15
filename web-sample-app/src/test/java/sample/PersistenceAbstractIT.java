@@ -4,10 +4,10 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.springframework.mock.jndi.SimpleNamingContextBuilder;
 
-import sample.configuration.BaseIT;
+import sample.configuration.AbstractBaseIT;
 import sample.configuration.JdbcJndiTestSupport;
 
-public abstract class PersistenceAbstractIT extends BaseIT{
+public abstract class PersistenceAbstractIT extends AbstractBaseIT{
 protected static SimpleNamingContextBuilder context = null;
 	
 	@BeforeClass

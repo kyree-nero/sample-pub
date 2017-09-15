@@ -20,7 +20,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 			ServletTestExecutionListener.class
 		}
 )
-public class WebSecurityIT extends WebSecAbstractIT{
+public class SampleWebSecurityIT extends WebSecAbstractIT{
 	
 	@Test public void testCSRF()throws Exception {
 		mockMvc
