@@ -6,7 +6,7 @@ import org.springframework.mock.jndi.SimpleNamingContextBuilder;
 
 import sample.configuration.JdbcJndiTestSupport;
 
-public abstract class PersistenceAbstractIT extends AbstractBaseIT{
+public abstract class AbstractPersistenceIT extends AbstractBaseIT{
 protected static SimpleNamingContextBuilder context = null;
 	
 	@BeforeClass

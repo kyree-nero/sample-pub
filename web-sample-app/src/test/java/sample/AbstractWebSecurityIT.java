@@ -26,7 +26,7 @@ import sample.configuration.WebSecurityConfiguration;
 		}
 )
 @WebAppConfiguration 
-public abstract class AbstractWebSecurityIT extends PersistenceAbstractIT{
+public abstract class AbstractWebSecurityIT extends AbstractPersistenceIT{
 	protected MockMvc mockMvc;
 	@Autowired WebApplicationContext webApplicationContext;
 	@Autowired private Filter springSecurityFilterChain;

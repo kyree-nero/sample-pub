@@ -11,7 +11,7 @@ import sample.persistence.dao.SampleDao;
 
 @ContextConfiguration(loader=AnnotationConfigContextLoader.class, 
 classes= {PersistenceConfiguration.class})
-public class SampleJdbcIT extends PersistenceAbstractIT {
+public class SampleJdbcIT extends AbstractPersistenceIT {
 	
 	@Autowired SampleDao sampleDao;
 	
