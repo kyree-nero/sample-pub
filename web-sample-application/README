@@ -1,0 +1,12 @@
+This is a web sample application.
+
+The following concepts are used.
+
+Spring Security (BASIC Authentication, Persistence backed Authorization, Security hardening)
+Spring Mvc (REST, Traditional MVC)
+Spring Data (JPA)
+Jdbc
+Spring Integration Test (Junit)
+
+The project is fully tested with integration tests, and runs in jboss 7 eap
+
