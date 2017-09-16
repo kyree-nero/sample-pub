@@ -33,9 +33,7 @@ public class SampleRestController extends WebMvcConfigurerAdapter {
 	
 	@PostMapping(path = "/sample", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public Sample add(@Valid @RequestBody Sample sample, Model model) {
-		
 		return sampleService.save(sample);
-		
 	 }
 
 

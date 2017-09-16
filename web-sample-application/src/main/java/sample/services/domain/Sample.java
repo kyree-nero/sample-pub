@@ -1,6 +1,6 @@
 package sample.services.domain;
 
-public class Sample {
+public class Sample{
 	private Long id;
 	private String content;
 	

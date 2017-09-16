@@ -1,10 +1,8 @@
 package sample;
 
 import org.hamcrest.Matchers;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.http.MediaType;
-import org.springframework.http.converter.json.GsonBuilderUtils;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
@@ -52,7 +50,7 @@ public class SampleRestControllerIT extends AbstractWebMvcIT{
 	}
 	
 	
-	@Ignore @Test public void testSaveWithValidationException() throws Exception {
+	@Test public void testSaveWithValidationException() throws Exception {
 		Sample requestSample = new Sample();
 		ObjectMapper mapper = new ObjectMapper();
 		String jsonInString = mapper.writeValueAsString(requestSample);
@@ -65,7 +63,7 @@ public class SampleRestControllerIT extends AbstractWebMvcIT{
 				.accept(MediaType.APPLICATION_JSON))
 				.andDo(MockMvcResultHandlers.print())
 		.andExpect(MockMvcResultMatchers.status().isBadRequest())
-		.andExpect(MockMvcResultMatchers.model().hasErrors())
+		.andExpect(MockMvcResultMatchers.jsonPath("errors", Matchers.not(Matchers.empty())))
 		.andReturn();
 	}
 	
