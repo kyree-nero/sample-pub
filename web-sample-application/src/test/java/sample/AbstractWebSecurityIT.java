@@ -1,6 +1,5 @@
 package sample;
 
-import javax.servlet.Filter;
 
 import org.junit.Before;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,13 +28,11 @@ import sample.configuration.WebSecurityConfiguration;
 public abstract class AbstractWebSecurityIT extends AbstractPersistenceIT{
 	protected MockMvc mockMvc;
 	@Autowired WebApplicationContext webApplicationContext;
-	@Autowired private Filter springSecurityFilterChain;
 	
 	
 	@Before public void before() {
 		mockMvc = MockMvcBuilders
 			.webAppContextSetup(webApplicationContext)
-			//.addFilters(springSecurityFilterChain)
 			.apply(SecurityMockMvcConfigurers.springSecurity()) 
 			.build();
 	}

@@ -49,6 +49,27 @@ public class SampleRestControllerIT extends AbstractWebMvcIT{
 		.andReturn();
 	}
 	
+
+	
+	@Test public void testUpdate() throws Exception {
+		Sample requestSample = new Sample();
+		requestSample.setId(1L);
+		requestSample.setContent("update text");
+		ObjectMapper mapper = new ObjectMapper();
+		String jsonInString = mapper.writeValueAsString(requestSample);
+
+
+		MvcResult result = mockMvc.perform(
+				MockMvcRequestBuilders.post("/sample", new Object[] {})
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(jsonInString)
+				.accept(MediaType.APPLICATION_JSON))
+				.andDo(MockMvcResultHandlers.print())
+		.andExpect(MockMvcResultMatchers.status().isOk())
+		.andExpect(MockMvcResultMatchers.jsonPath("id", Matchers.notNullValue()))
+		.andReturn();
+	}
+	
 	
 	@Test public void testSaveWithValidationException() throws Exception {
 		Sample requestSample = new Sample();
