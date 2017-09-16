@@ -2,11 +2,15 @@ This is a web sample application.
 
 The following concepts are used.
 
-Spring Security (BASIC Authentication, Persistence backed Authorization, Security hardening)
+Spring Security (BASIC Authentication, Persistence backed Authorization, Moderate Security Hardening)
 Spring Mvc (REST, Traditional MVC)
 Spring Data (JPA)
 Jdbc
 Spring Integration Test (Junit)
 
-The project is fully tested with integration tests, and runs in jboss 7 eap
+The project is fully tested with integration tests, and runs in JBOSS 7 EAP
 
+Links
+(This assumes you have it running locally)
+Simple Rest: Get http://localhost:8080/app/sample/1
+Tip:  To set up users in JBOSS use the addUser script included with in JBOSS's home/bin directory

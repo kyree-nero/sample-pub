@@ -1,16 +1,21 @@
 package sample.persistence.entities;
 
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
-
 @Entity
 @Table(name = "SAMPLE")
+
 public class SampleEntry {
-	@Id @Column(name="ID") private Long id;
+	@Id @Column(name="ID")  @GeneratedValue(generator="seq_sample")
+	@SequenceGenerator(name="seq_sample",sequenceName="SEQ_SAMPLE", allocationSize=1) private Long id;
 	@Column(name="CONTENT") String content;
 	@Column(name="VERSION") @Version Long version;
 	

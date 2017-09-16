@@ -9,12 +9,16 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 
+import sample.services.domain.SampleValidator;
 import sample.web.controllers.SampleControllerAdvice;
 import sample.web.controllers.SampleRestController;
 
 @Configuration
 @EnableWebMvc
-@ComponentScan(basePackageClasses= {SampleControllerAdvice.class, SampleRestController.class})
+@ComponentScan(basePackageClasses= {
+		SampleValidator.class,
+		SampleControllerAdvice.class, 
+		SampleRestController.class})
 public class WebConfiguration extends WebMvcConfigurerAdapter {
 
 	@Override

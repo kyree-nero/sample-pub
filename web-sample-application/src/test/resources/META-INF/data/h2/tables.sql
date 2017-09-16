@@ -1,5 +1,7 @@
+CREATE SEQUENCE SEQ_SAMPLE;
+
 CREATE TABLE SAMPLE (
-	 id INT not null, 
+	 id INT not null DEFAULT SEQ_SAMPLE.nextval primary key, 
 	 content VARCHAR(100) not null,
 	 version INT not null,
 ); 

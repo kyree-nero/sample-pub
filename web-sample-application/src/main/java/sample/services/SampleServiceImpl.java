@@ -45,9 +45,11 @@ public class SampleServiceImpl implements SampleService {
 	@Override
 	@Transactional
 	public Sample save(Sample sample) {
-		SampleEntry sampleEntry =  sampleEntryRepository.findOne(sample.getId());
+		SampleEntry sampleEntry = null;
 		if(sampleEntry == null) {
 			sampleEntry = new SampleEntry();
+		}else {
+			sampleEntry =  sampleEntryRepository.findOne(sample.getId());
 		}
 		sampleEntry.setContent(sample.getContent());
 		sampleEntry = sampleEntryRepository.save(sampleEntry);
