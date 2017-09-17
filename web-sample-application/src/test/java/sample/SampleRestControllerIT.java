@@ -16,6 +16,21 @@ import sample.services.domain.Sample;
 public class SampleRestControllerIT extends AbstractWebMvcIT{
 	
 	
+	@Test public void testFindAll() throws Exception {
+		MvcResult result = mockMvc.perform(
+				MockMvcRequestBuilders.get("/sample", new Object[] {})
+				.accept(MediaType.APPLICATION_JSON)
+				.contentType(MediaType.APPLICATION_JSON)
+				
+		)
+				.andDo(MockMvcResultHandlers.print())
+		.andExpect(MockMvcResultMatchers.status().isOk())
+		.andExpect(MockMvcResultMatchers.jsonPath("$", Matchers.hasSize(1)))
+		.andExpect(MockMvcResultMatchers.jsonPath("$[0].id", Matchers.notNullValue()))
+		.andReturn();
+	}
+	
+	
 	@Test public void testFindById() throws Exception {
 		MvcResult result = mockMvc.perform(
 				MockMvcRequestBuilders.get("/sample/0", new Object[] {})

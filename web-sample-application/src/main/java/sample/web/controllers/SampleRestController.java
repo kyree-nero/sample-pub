@@ -1,5 +1,7 @@
 package sample.web.controllers;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +25,12 @@ public class SampleRestController extends WebMvcConfigurerAdapter {
 
 	@Autowired SampleService sampleService;
 	@Autowired SampleValidator sampleValidator;
+	
+	@GetMapping(path = "/sample", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@ResponseBody
+	public List<Sample> getSample( Model model) {
+		return sampleService.findSamples();
+	}
 	
 	@GetMapping(path = "/sample/{id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody

@@ -1,5 +1,8 @@
 package sample.services;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +44,23 @@ public class SampleServiceImpl implements SampleService {
 		return sample;
 		
 	}
+	
+	@Override
+	@Transactional
+	public List<Sample> findSamples() {
+		
+		List<SampleEntry> sampleEntries =  sampleEntryRepository.findAll();
+		List<Sample> response = new ArrayList<Sample>();
+		for(SampleEntry entry:sampleEntries) {
+			Sample sample = new Sample();
+			sample.setContent(entry.getContent());
+			sample.setId(entry.getId());
+			response.add(sample);
+		}
+		return response;
+		
+	}
+	
 
 	@Override
 	@Transactional
