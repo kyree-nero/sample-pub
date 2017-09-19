@@ -28,4 +28,6 @@ public abstract class AbstractWebMvcIT extends AbstractPersistenceIT{
 	@Before public void before() {
 		mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
 	}
+	
+	
 }

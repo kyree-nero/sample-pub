@@ -1,7 +1,9 @@
 package sample;
 
 import org.hamcrest.Matchers;
+import org.junit.Assert;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -10,13 +12,14 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import sample.persistence.repositories.SampleEntryRepository;
 import sample.services.domain.Sample;
-  
-
+//@Transactional(propagation = Propagation.NOT_SUPPORTED)
 public class SampleRestControllerIT extends AbstractWebMvcIT{
-	
-	
+	@Autowired SampleEntryRepository sampleEntryRepository;
+//	@Test public void test() {}
 	@Test public void testFindAll() throws Exception {
+		
 		MvcResult result = mockMvc.perform(
 				MockMvcRequestBuilders.get("/sample", new Object[] {})
 				.accept(MediaType.APPLICATION_JSON)
@@ -25,7 +28,7 @@ public class SampleRestControllerIT extends AbstractWebMvcIT{
 		)
 				.andDo(MockMvcResultHandlers.print())
 		.andExpect(MockMvcResultMatchers.status().isOk())
-		.andExpect(MockMvcResultMatchers.jsonPath("$", Matchers.hasSize(1)))
+		.andExpect(MockMvcResultMatchers.jsonPath("$", Matchers.hasSize(2)))
 		.andExpect(MockMvcResultMatchers.jsonPath("$[0].id", Matchers.notNullValue()))
 		.andReturn();
 	}
@@ -47,6 +50,10 @@ public class SampleRestControllerIT extends AbstractWebMvcIT{
 	
 	
 	@Test public void testSave() throws Exception {
+		
+		long count = sampleEntryRepository.count();
+		
+		
 		Sample requestSample = new Sample();
 		requestSample.setContent("some text");
 		ObjectMapper mapper = new ObjectMapper();
@@ -54,7 +61,7 @@ public class SampleRestControllerIT extends AbstractWebMvcIT{
 
 
 		MvcResult result = mockMvc.perform(
-				MockMvcRequestBuilders.post("/sample", new Object[] {})
+				MockMvcRequestBuilders.put("/sample", new Object[] {})
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(jsonInString)
 				.accept(MediaType.APPLICATION_JSON))
@@ -62,13 +69,20 @@ public class SampleRestControllerIT extends AbstractWebMvcIT{
 		.andExpect(MockMvcResultMatchers.status().isOk())
 		.andExpect(MockMvcResultMatchers.jsonPath("id", Matchers.notNullValue()))
 		.andReturn();
+		
+		long posttCount = sampleEntryRepository.count();
+		
+		Assert.assertTrue(posttCount != count);
 	}
 	
 
 	
 	@Test public void testUpdate() throws Exception {
+		
+		long count = sampleEntryRepository.count();
+		
 		Sample requestSample = new Sample();
-		requestSample.setId(1L);
+		requestSample.setId(0L);
 		requestSample.setContent("update text");
 		ObjectMapper mapper = new ObjectMapper();
 		String jsonInString = mapper.writeValueAsString(requestSample);
@@ -83,7 +97,29 @@ public class SampleRestControllerIT extends AbstractWebMvcIT{
 		.andExpect(MockMvcResultMatchers.status().isOk())
 		.andExpect(MockMvcResultMatchers.jsonPath("id", Matchers.notNullValue()))
 		.andReturn();
+		
+		long posttCount = sampleEntryRepository.count();
+		
+		Assert.assertTrue(posttCount == count);
 	}
+	
+	
+	@Test public void testRemove() throws Exception {
+		long count = sampleEntryRepository.count();
+		
+		MvcResult result = mockMvc.perform(
+				MockMvcRequestBuilders.delete("/sample/5000", new Object[] {})
+				.contentType(MediaType.APPLICATION_JSON)
+				.accept(MediaType.APPLICATION_JSON))
+				.andDo(MockMvcResultHandlers.print())
+		.andExpect(MockMvcResultMatchers.status().isOk())
+		.andReturn();
+		
+		long posttCount = sampleEntryRepository.count();
+		
+		Assert.assertFalse(posttCount == count);
+	}
+	
 	
 	
 	@Test public void testSaveWithValidationException() throws Exception {
@@ -104,13 +140,15 @@ public class SampleRestControllerIT extends AbstractWebMvcIT{
 	}
 	
 	
-	@Test public void testApplicationException() throws Exception {
-		MvcResult result = mockMvc.perform(
-				MockMvcRequestBuilders.get("/generateException", new Object[] {}))
-						
-		
-		.andExpect(MockMvcResultMatchers.status().isNotFound())
-		
-		.andReturn();
-	}
+	
+//	
+//	@Test public void testApplicationException() throws Exception {
+//		MvcResult result = mockMvc.perform(
+//				MockMvcRequestBuilders.get("/generateException", new Object[] {}))
+//						
+//		
+//		.andExpect(MockMvcResultMatchers.status().isNotFound())
+//		
+//		.andReturn();
+//	}
 }

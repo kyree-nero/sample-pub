@@ -8,9 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.ui.Model;
 import org.springframework.validation.Validator;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -40,10 +42,28 @@ public class SampleRestController extends WebMvcConfigurerAdapter {
 	
 	
 	@PostMapping(path = "/sample", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	public Sample add(@Valid @RequestBody Sample sample, Model model) {
+	@ResponseBody
+	public Sample update(@Valid @RequestBody Sample sample, Model model) {
+		
 		return sampleService.save(sample);
+		
 	 }
 
+	
+	@PutMapping(path = "/sample", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@ResponseBody
+	public Sample add(@Valid @RequestBody Sample sample, Model model) {
+		
+		return sampleService.save(sample);
+		
+	 }
+	
+	
+	@DeleteMapping(path = "/sample/{id}", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@ResponseBody
+	public void remove(@PathVariable Long id, Model model) {
+		 sampleService.remove(id);
+	}
 
 	@Override
 	public Validator getValidator() {

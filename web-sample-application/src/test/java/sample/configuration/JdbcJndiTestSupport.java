@@ -3,14 +3,18 @@ package sample.configuration;
 import java.util.Properties;
 import java.util.UUID;
 
+import javax.naming.NamingException;
+
 import org.springframework.mock.jndi.SimpleNamingContextBuilder;
 import org.springframework.test.context.MergedContextConfiguration;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
 
+import bitronix.tm.TransactionManagerServices;
 import bitronix.tm.resource.jdbc.PoolingDataSource;
 
 public class JdbcJndiTestSupport {
 	public static SimpleNamingContextBuilder initializeJNDI() throws Exception{
+		System.out.println("...initialize JNDI");
 		SimpleNamingContextBuilder context = SimpleNamingContextBuilder.getCurrentContextBuilder();
 		
 		if(context == null) {
@@ -53,6 +57,14 @@ public class JdbcJndiTestSupport {
 				},
 				new String[] {}, preLoadContextLoader); 
 		preLoadContextLoader.loadContext(preloadContext);
+		
 		return context;
+		
 	}
+	
+	public static void cleanupJNDI() throws NamingException{
+		System.out.println("...cleanup JNDI");
+		SimpleNamingContextBuilder.emptyActivatedContextBuilder();
+	}
+	
 }

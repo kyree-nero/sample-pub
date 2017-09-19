@@ -28,9 +28,9 @@ public class SampleControllerAdvice {
 	    }
 	 	
 	 	@ResponseStatus(HttpStatus.NOT_FOUND)  // 404
-	    @ExceptionHandler(Exception.class)
-	    public void handleOthers() {
-	        // Nothing to do
+	    @ExceptionHandler(Throwable.class)
+	    public void handleOthers(Throwable throwable) {
+	 		throwable.printStackTrace();
 	    }
 	 	
 	 	

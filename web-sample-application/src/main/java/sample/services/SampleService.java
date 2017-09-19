@@ -11,4 +11,6 @@ public interface SampleService {
 	public List<Sample> findSamples() ;
 	public Sample findSample(Long id);
 	public Sample save(Sample sample);
+	public void remove(Long id);
 }
+

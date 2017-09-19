@@ -2,17 +2,22 @@ package sample.configuration;
 
 import java.util.Properties;
 
+import javax.persistence.spi.PersistenceUnitTransactionType;
 import javax.sql.DataSource;
 
 import org.hibernate.dialect.H2Dialect;
 import org.hibernate.dialect.MySQLDialect;
 import org.hibernate.jpa.HibernatePersistenceProvider;
+import org.springframework.beans.BeansException;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.context.annotation.Profile;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
+import org.springframework.orm.jpa.persistenceunit.MutablePersistenceUnitInfo;
+import org.springframework.orm.jpa.persistenceunit.PersistenceUnitPostProcessor;
 
 @Configuration
 @EnableJpaRepositories("sample.persistence.repositories")
@@ -23,7 +28,24 @@ public class PersistenceJPAConfiguration {
 	 	        entityManagerFactoryBean.setPersistenceProviderClass(HibernatePersistenceProvider.class);
 	 	        entityManagerFactoryBean.setPackagesToScan("sample.persistence.entities");
 	 	        entityManagerFactoryBean.setJpaProperties(testHibProperties());
-	 	       entityManagerFactoryBean.setPersistenceUnitName("samplePersistenceUnit");
+	 	        entityManagerFactoryBean.setPersistenceUnitName("samplePersistenceUnit");
+	 	       
+	 	        entityManagerFactoryBean.setPersistenceUnitPostProcessors(
+	 	        		new PersistenceUnitPostProcessor() {
+				 
+			 	        	
+							@Override
+							public void postProcessPersistenceUnitInfo(MutablePersistenceUnitInfo persistenceUnitInfo) {
+								persistenceUnitInfo.setTransactionType(PersistenceUnitTransactionType.JTA);
+									persistenceUnitInfo.setJtaDataSource(persistenceUnitInfo.getNonJtaDataSource());
+									persistenceUnitInfo.setNonJtaDataSource(null);
+									
+								
+							}
+							
+							
+						}
+	 	        );
 	 	        return entityManagerFactoryBean;
 	 
 	 }

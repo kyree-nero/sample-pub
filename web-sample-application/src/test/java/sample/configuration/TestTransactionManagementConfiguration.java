@@ -21,7 +21,8 @@ public class TestTransactionManagementConfiguration {
 		return configuration;
 	}
 //	
-	@Bean(destroyMethod="shutdown") public BitronixTransactionManager bitronixTransactionManager() throws Exception{
+	@Bean//(destroyMethod="shutdown") 
+	public BitronixTransactionManager bitronixTransactionManager() throws Exception{
 		btmConfig();
 		BitronixTransactionManager transactionManager = TransactionManagerServices.getTransactionManager();
 		transactionManager.setTransactionTimeout(120);

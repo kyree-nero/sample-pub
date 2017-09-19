@@ -3,10 +3,10 @@ package sample.services;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import sample.persistence.dao.SampleDao;
 import sample.persistence.entities.SampleEntry;
@@ -14,6 +14,7 @@ import sample.persistence.repositories.SampleEntryRepository;
 import sample.services.domain.Sample;
 
 @Service
+@Transactional
 public class SampleServiceImpl implements SampleService {
 
 	@Autowired SampleDao dao;
@@ -35,7 +36,7 @@ public class SampleServiceImpl implements SampleService {
 	}
 
 	@Override
-	@Transactional
+	
 	public Sample findSample(Long id) {
 		SampleEntry sampleEntry =  sampleEntryRepository.findOne(id);
 		Sample sample = new Sample();
@@ -46,7 +47,7 @@ public class SampleServiceImpl implements SampleService {
 	}
 	
 	@Override
-	@Transactional
+	
 	public List<Sample> findSamples() {
 		
 		List<SampleEntry> sampleEntries =  sampleEntryRepository.findAll();
@@ -63,13 +64,15 @@ public class SampleServiceImpl implements SampleService {
 	
 
 	@Override
-	@Transactional
 	public Sample save(Sample sample) {
 		SampleEntry sampleEntry = null;
-		if(sampleEntry == null) {
+		if(sample.getId() == null) {
 			sampleEntry = new SampleEntry();
 		}else {
 			sampleEntry =  sampleEntryRepository.findOne(sample.getId());
+			if(sampleEntry == null) {
+				throw new IllegalArgumentException("SampleEntry not found");
+			}
 		}
 		sampleEntry.setContent(sample.getContent());
 		sampleEntry = sampleEntryRepository.save(sampleEntry);
@@ -78,7 +81,13 @@ public class SampleServiceImpl implements SampleService {
 		sampleResponse.setContent(sampleEntry.getContent());
 		return sampleResponse;
 	}
-	
-	
 
+	@Override
+	public void remove(Long id) {
+		sampleEntryRepository.delete(id);
+		
+	}
+	
+	
+	
 }
