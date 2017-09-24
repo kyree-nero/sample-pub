@@ -1,13 +1,88 @@
+<meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+<meta content="utf-8" http-equiv="encoding">
 <html>
-	<head>
-		<title>sample web application</title>
-	</head>
- 	<body>
- 		<div>
- 			
- 		
- 		
- 		</div>
- 	
- 	</body>
-</html>
+<head>
+<title>Sample Web Application</title>
+	<script type="text/javascript" src="../js/jquery-3.2.1.min.js"></script>
+	<style type="text/css">
+ 		.divTable{
+			display: table;
+			width: 300px;
+		}
+		.divTableRow {
+			display: table-row;
+		}
+		.divTableHeading {
+			background-color: #EEE;
+			display: table-header-group;
+		}
+		.divTableCell, .divTableHead {
+			border: 1px solid #999999;
+			display: table-cell;
+			padding: 3px 10px;
+		}
+		.divTableHeading {
+			background-color: #EEE;
+			display: table-header-group;
+			font-weight: bold;
+		}
+		.divTableFoot {
+			background-color: #EEE;
+			display: table-footer-group;
+			font-weight: bold;
+		}
+		.divTableBody {
+			display: table-row-group;
+		}
+ 	</style>
+</head>
+ 
+<script type="text/javascript">
+ 
+$(document).ready(function(){
+	$.getJSON( "../../sample", function( data ) {
+		var items = [];
+		items.push("Sample Data <br/>");
+		items.push("<div class='divTable' >");
+			items.push("<div class='divTableBody'>");
+			
+				items.push("<div class='divTableRow'>");
+					items.push("<div class='divTableCell'>&nbsp;</div>");
+					items.push("<div class='divTableCell'>&nbsp;</div>");
+					items.push("<div class='divTableCell'>CONTENT</div>");
+				items.push("</div>");
+				
+				items.push("<div class='divTableRow'>");
+				  	$.each(data, function (index, item) {
+					  //console.log(item.content);
+					  	items.push("<div class='divTableCell'><img height='25' width='25' src='../images/delete.jpeg'/></div>");
+					  	items.push("<div class='divTableCell'><img height='25' width='25' src='../images/edit.png'/></div>");
+					  	items.push("<div class='divTableCell'>" + item.content + "</div>" );
+					});
+			  	items.push("</div>");
+			  	
+			  	items.push("<div class='divTableRow'>");
+					items.push("<div class='divTableCell'><img height='25' width='25' src='../images/add.png'/></div>");
+					items.push("<div class='divTableCell'>&nbsp;</div>");
+					items.push("<div class='divTableCell'>&nbsp;</div>");
+				items.push("</div>");
+			
+		  	items.push("</div>");
+	  	items.push("</div>");
+	  	
+		$("#data").html(items.join(""));
+		}
+	);
+});
+ 
+</script>
+<body>
+<font color=red> 
+This page lists the REST objects we can manipulate<hr/>
+</font>
+<font color=blue>
+<div id="data">
+</div>
+</font>
+</body>
+</html> 

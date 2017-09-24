@@ -12,7 +12,9 @@ import org.springframework.security.access.AccessDecisionManager;
 import org.springframework.security.access.AccessDecisionVoter;
 import org.springframework.security.access.vote.UnanimousBased;
 import org.springframework.security.authentication.AuthenticationDetailsSource;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.authority.mapping.SimpleAttributes2GrantedAuthoritiesMapper;
@@ -34,12 +36,18 @@ import sample.web.security.PersistedExpressionVoter;
 @EnableWebSecurity
 public class WebSecurityConfiguration  extends WebSecurityConfigurerAdapter {
 	@Autowired AuthorizationService authorizationService;
-//	@Autowired
-//	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-//	  auth.inMemoryAuthentication().withUser("user").password("123456").roles("USER");
-//	  auth.inMemoryAuthentication().withUser("admin").password("123456").roles("ADMIN");
-//	  auth.inMemoryAuthentication().withUser("dba").password("123456").roles("DBA");
-//	}
+
+	
+	
+	
+	@Override
+	public void configure(WebSecurity web) throws Exception {
+		super.configure(web);
+		web.ignoring()
+		.antMatchers("/resources/html/**")
+		.antMatchers("/resources/js/**")
+		.antMatchers("/resources/images/**");
+	}
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
@@ -49,7 +57,6 @@ public class WebSecurityConfiguration  extends WebSecurityConfigurerAdapter {
 			.authenticationProvider(authenticationProvider())
 			.addFilter(preAuthenticatedProcessingFilter())
 		
-			//.authorizeRequests().anyRequest().authenticated()
 			.authorizeRequests().anyRequest().authenticated().accessDecisionManager(accessDecisionManager())
 			
 		;
@@ -88,8 +95,15 @@ public class WebSecurityConfiguration  extends WebSecurityConfigurerAdapter {
 					 */
 					.xssProtection() 
 					;
+			
 	}
 	
+	@Override
+	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+		// TODO Auto-generated method stub
+		super.configure(auth);
+	}
+
 	@Bean
 	public AccessDecisionManager accessDecisionManager() {
 	    List<AccessDecisionVoter<? extends Object>> decisionVoters 
