@@ -3,6 +3,7 @@ package sample.services.domain;
 public class Sample{
 	private Long id;
 	private String content;
+	private Long version;
 	
 	/**
 	 * @return the id
@@ -30,6 +31,14 @@ public class Sample{
 	 */
 	public void setContent(String content) {
 		this.content = content;
+	}
+
+	public Long getVersion() {
+		return version;
+	}
+
+	public void setVersion(Long version) {
+		this.version = version;
 	}
 	
 	

@@ -84,6 +84,7 @@ public class SampleRestControllerIT extends AbstractWebMvcIT{
 		Sample requestSample = new Sample();
 		requestSample.setId(0L);
 		requestSample.setContent("update text");
+		requestSample.setVersion(0L);
 		ObjectMapper mapper = new ObjectMapper();
 		String jsonInString = mapper.writeValueAsString(requestSample);
 

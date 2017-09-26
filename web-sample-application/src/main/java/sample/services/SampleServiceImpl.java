@@ -42,6 +42,7 @@ public class SampleServiceImpl implements SampleService {
 		Sample sample = new Sample();
 		sample.setContent(sampleEntry.getContent());
 		sample.setId(sampleEntry.getId());
+		sample.setVersion(sampleEntry.getVersion());
 		return sample;
 		
 	}
@@ -56,6 +57,7 @@ public class SampleServiceImpl implements SampleService {
 			Sample sample = new Sample();
 			sample.setContent(entry.getContent());
 			sample.setId(entry.getId());
+			sample.setVersion(entry.getVersion());
 			response.add(sample);
 		}
 		return response;
@@ -69,7 +71,7 @@ public class SampleServiceImpl implements SampleService {
 		if(sample.getId() == null) {
 			sampleEntry = new SampleEntry();
 		}else {
-			sampleEntry =  sampleEntryRepository.findOne(sample.getId());
+			sampleEntry =  sampleEntryRepository.findByIdAndVersion(sample.getId(), sample.getVersion());
 			if(sampleEntry == null) {
 				throw new IllegalArgumentException("SampleEntry not found");
 			}

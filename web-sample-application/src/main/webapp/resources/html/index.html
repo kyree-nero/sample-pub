@@ -1,5 +1,6 @@
 <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
 <meta content="utf-8" http-equiv="encoding">
+
 <html>
 <head>
 <title>Sample Web Application</title>
@@ -35,18 +36,54 @@
 			display: table-row-group;
 		}
  	</style>
+ 	<meta name="_csrf" content="${_csrf.token}"/>
+	<meta name="_csrf_header" content="${_csrf.headerName}"/>
 </head>
  
 <script type="text/javascript">
- 
+function deleteClick(element, id){
+	alert(id);
+	alert(element);
+}
+function openEntryForUpdate(element, id){
+	var inputObject = document.getElementById("contentEdit"+id+"Id");
+	alert(inputObject);
+	inputObject.disabled = false;
+	
+	$("#confirmUpdate"+id+"DivId").css('display', 'inline-block');
+}
+function updateClick(element, id, version){
+	alert(id);
+	alert(element);
+	alert(version);
+	
+	var token = $("meta[name='_csrf']").attr("content");
+	var header = $("meta[name='_csrf_header']").attr("content");
+	alert(token);
+	alert(header);
+	
+	var inputObject = document.getElementById("contentEdit"+id+"Id");
+	
+	alert(inputObject.value);
+	var sample = new Object();
+	sample.id = id;
+	sample.content = inputObject.value;
+	sample.version = version;
+	alert(id);
+	
+	$.post('../../sample', sample, 
+		function(response) {
+	    	alert(555);
+	    	alert(response);
+		}, 
+	'json');
+	alert(id);
+	
+}
 $(document).ready(
+		
 		function(){
-		    $( "button" ).click( 
-		    	function( event ) {
-		        	//event.preventDefault();
-		    		console.log(item.content);
-		      	} 
-		    );
+		   
 			$.getJSON( "../../sample", 
 				function( data ) {
 					var items = [];
@@ -65,14 +102,22 @@ $(document).ready(
 							  //console.log(item.content);
 							  items.push("<div id='divTableRowContent"+item.id+"Id' class='divTableRow'>");
 							  	items.push("<div id='divTableCell1Content"+item.id+"Id' class='divTableCell'>"
-							  					+"<input type='image' id='delete"+item.id+"Id' height='25' width='25' src='../images/delete.jpeg' />"
+							  					+"<button id='delete"+item.id+"Id' onclick='deleteClick(this, "+item.id+")'><img  height='25' width='25' src='../images/delete.jpeg'/></button>"
 							  				+"</div>");
 							  	items.push("<div id='divTableCell2Content"+item.id+"Id' class='divTableCell'>"
-					  							+"<input type='image' id='edit"+item.id+"Id' height='25' width='25' src='../images/edit.png' />"
+					  							+"<button id='update"+item.id+"Id' onclick='openEntryForUpdate(this, "+item.id+")'><img  height='25' width='25' src='../images/edit.png'/></button>"
 					  						+"</div>");
-							  	items.push("<div id='divTableCell3Content"+item.id+"Id' class='divTableCell'>" + item.content + "</div>" );
+							  	items.push("<div id='divTableCell3Content"+item.id+"Id' class='divTableCell'>" 
+							  				+ "<input type='text' id='contentEdit"+item.id+"Id' width='50' value='"+item.content+"' disabled />"
+							  				+"<div id='confirmUpdate"+item.id+"DivId' style='display:none'>"
+							  					+"<button id='confirmUpdate"+item.id+"Id' onclick='updateClick(this, "+item.id+", "+item.version+")'><img  height='25' width='25' src='../images/check.png'/></button>"
+							  				+ "</div>" 
+							  			+ "</div>" );
 							  items.push("</div>");
+							  
 							});
+						  	
+						  	
 						  	items.push("<div id='divTableRowEndId' class='divTableRow'>");
 								items.push("<div id='divTableCellEnd1Id' class='divTableCell'>"
 												+"<input type='image' id='addId' height='25' width='25' src='../images/add.png'/>"
@@ -88,14 +133,16 @@ $(document).ready(
 				  	items.push("</div>");
 				  	
 					$("#data").html(items.join(""));
+					
 					$("#newContent").hide();
 					$("#confirmAddId").hide();
+					
+					
 					$("#addId").click(
 							function() {
 								$("#newContent").show();
 								$("#confirmAddId").show();
 							}
-							
 					);
 					$("#confirmAddId").click(
 							function() {
@@ -103,6 +150,9 @@ $(document).ready(
 								$("#confirmAddId").hide();
 							}
 					);
+					
+					
+					$("body").on()
 				}
 			);
 	}
@@ -110,6 +160,7 @@ $(document).ready(
  
 </script>
 <body>
+	<input type="hidden"  name="${_csrf.parameterName}"   value="${_csrf.token}"/>
 <font color=red> 
 This page lists the REST objects we can manipulate<hr/>
 </font>
