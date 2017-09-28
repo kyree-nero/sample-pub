@@ -88,12 +88,14 @@ public class SampleRestControllerIT extends AbstractWebMvcIT{
 		ObjectMapper mapper = new ObjectMapper();
 		String jsonInString = mapper.writeValueAsString(requestSample);
 
+		
 
 		MvcResult result = mockMvc.perform(
 				MockMvcRequestBuilders.post("/sample", new Object[] {})
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(jsonInString)
 				.accept(MediaType.APPLICATION_JSON))
+				
 				.andDo(MockMvcResultHandlers.print())
 		.andExpect(MockMvcResultMatchers.status().isOk())
 		.andExpect(MockMvcResultMatchers.jsonPath("id", Matchers.notNullValue()))

@@ -7,13 +7,12 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.transaction.jta.JtaTransactionManager;
 
 @Configuration
-@Import(TransactionManagementConfigurationExtender.class)
+@Import({
+	TransactionManagementConfigurationExtender.class, 
+	TransactionManagementDefaultConfiguration.class})
 public class TransactionManagementConfiguration {
 	
 
-	@Bean @Profile("default") public JtaTransactionManager transactionManager() {
-		return new JtaTransactionManager();
-	}
 	
 	
 	

@@ -28,8 +28,11 @@ import org.springframework.security.web.authentication.preauth.PreAuthenticatedG
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedGrantedAuthoritiesWebAuthenticationDetails;
 import org.springframework.security.web.authentication.preauth.j2ee.J2eeBasedPreAuthenticatedWebAuthenticationDetailsSource;
 import org.springframework.security.web.authentication.preauth.j2ee.J2eePreAuthenticatedProcessingFilter;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+import org.springframework.security.web.csrf.CsrfFilter;
 
 import sample.services.AuthorizationService;
+import sample.web.security.CsrfTokenResponseFilter;
 import sample.web.security.PersistedExpressionVoter;
 
 @Configuration
@@ -56,9 +59,11 @@ public class WebSecurityConfiguration  extends WebSecurityConfigurerAdapter {
 			.formLogin().disable()
 			.authenticationProvider(authenticationProvider())
 			.addFilter(preAuthenticatedProcessingFilter())
-		
+			.addFilterAfter(csrfTokenResponseFilter(), CsrfFilter.class)
 			.authorizeRequests().anyRequest().authenticated().accessDecisionManager(accessDecisionManager())
-			
+			.and()
+		      .csrf();
+		       
 		;
 		
 		http.exceptionHandling().authenticationEntryPoint(authentionEntryPoint());
@@ -98,6 +103,9 @@ public class WebSecurityConfiguration  extends WebSecurityConfigurerAdapter {
 			
 	}
 	
+	@Bean public CsrfTokenResponseFilter csrfTokenResponseFilter() {
+		return new CsrfTokenResponseFilter();
+	}
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 		// TODO Auto-generated method stub
