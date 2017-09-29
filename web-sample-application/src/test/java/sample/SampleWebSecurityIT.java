@@ -23,6 +23,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 public class SampleWebSecurityIT extends AbstractWebSecurityIT{
 	
 	@Test public void testCSRF()throws Exception {
+		
 		mockMvc
 	    .perform(
 	    		MockMvcRequestBuilders.post("/")
