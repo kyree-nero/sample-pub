@@ -59,7 +59,7 @@ public class SampleRestController extends WebMvcConfigurerAdapter {
 	 }
 	
 	
-	@DeleteMapping(path = "/sample/{id}", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@DeleteMapping(path = "/sample/{id}")
 	@ResponseBody
 	public void remove(@PathVariable Long id, Model model) {
 		 sampleService.remove(id);

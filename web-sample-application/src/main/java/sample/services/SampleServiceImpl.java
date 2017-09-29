@@ -13,7 +13,7 @@ import sample.persistence.repositories.SampleEntryRepository;
 import sample.services.domain.Sample;
 
 @Service
-@Transactional
+
 public class SampleServiceImpl implements SampleService {
 
 	@Autowired SampleDao dao;
@@ -65,10 +65,12 @@ public class SampleServiceImpl implements SampleService {
 	
 
 	@Override
+	@Transactional
 	public Sample save(Sample sample) {
 		SampleEntry sampleEntry = null;
 		if(sample.getId() == null) {
 			sampleEntry = new SampleEntry();
+			
 		}else {
 			sampleEntry =  sampleEntryRepository.findByIdAndVersion(sample.getId(), sample.getVersion());
 			if(sampleEntry == null) {
@@ -85,6 +87,7 @@ public class SampleServiceImpl implements SampleService {
 	}
 
 	@Override
+	@Transactional
 	public void remove(Long id) {
 		sampleEntryRepository.delete(id);
 		

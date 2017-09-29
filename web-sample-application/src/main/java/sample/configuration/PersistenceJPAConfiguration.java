@@ -106,6 +106,7 @@ public class PersistenceJPAConfiguration {
 
 	        properties.put("hibernate.show_sql", true);
 	        properties.put("hibernate.transaction.jta.platform", JBossAppServerJtaPlatform.class.getName());
+	        properties.put("hibernate.id.new_generator_mappings", false);
 	        return properties;
 
 }
