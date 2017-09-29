@@ -9,7 +9,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 public class SampleControllerIT extends AbstractWebMvcIT{
 	@Test public void test() throws Exception {
 		MvcResult result = mockMvc.perform(
-				MockMvcRequestBuilders.get("/read", new Object[] {})
+				MockMvcRequestBuilders.get("/sample", new Object[] {})
 				.param("in", "a")
 		
 		)

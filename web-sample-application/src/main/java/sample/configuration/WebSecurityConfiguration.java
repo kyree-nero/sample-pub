@@ -47,6 +47,7 @@ public class WebSecurityConfiguration  extends WebSecurityConfigurerAdapter {
 	public void configure(WebSecurity web) throws Exception {
 		super.configure(web);
 		web.ignoring()
+		.antMatchers("/*.html")
 		.antMatchers("/resources/html/**")
 		.antMatchers("/resources/js/**")
 		.antMatchers("/resources/images/**");
@@ -55,15 +56,17 @@ public class WebSecurityConfiguration  extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http
-		
-			.formLogin().disable()
-			.authenticationProvider(authenticationProvider())
 			.addFilter(preAuthenticatedProcessingFilter())
 			.addFilterAfter(csrfTokenResponseFilter(), CsrfFilter.class)
-			.authorizeRequests().anyRequest().authenticated().accessDecisionManager(accessDecisionManager())
+			.formLogin().disable()
+			.logout()
+				.deleteCookies("JSESSIONID")
+				.invalidateHttpSession(true)
+			.and()
+				.authenticationProvider(authenticationProvider())
+				.authorizeRequests().anyRequest().authenticated().accessDecisionManager(accessDecisionManager())
 			.and()
 		      .csrf();
-		       
 		;
 		
 		http.exceptionHandling().authenticationEntryPoint(authentionEntryPoint());

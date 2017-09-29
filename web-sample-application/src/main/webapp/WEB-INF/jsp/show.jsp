@@ -1,2 +1,3 @@
-
+<html>
 SAMPLE JSP
+</html>

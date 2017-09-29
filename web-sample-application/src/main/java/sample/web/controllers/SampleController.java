@@ -9,7 +9,7 @@ import sample.web.domain.SampleForm;
 @Controller
 public class SampleController {
 
-	@RequestMapping("/read")
+	@RequestMapping("/sample")
 	public String read(@ModelAttribute("sampleform") SampleForm sampleForm) {
 		if(sampleForm.getIn() != null) {
 			sampleForm.setOut("y");
