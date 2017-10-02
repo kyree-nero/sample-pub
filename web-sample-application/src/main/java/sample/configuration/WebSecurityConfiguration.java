@@ -48,9 +48,10 @@ public class WebSecurityConfiguration  extends WebSecurityConfigurerAdapter {
 		super.configure(web);
 		web.ignoring()
 		.antMatchers("/*.html")
-		.antMatchers("/resources/html/**")
+//		.antMatchers("/resources/html/**")
 		.antMatchers("/resources/js/**")
-		.antMatchers("/resources/images/**");
+		.antMatchers("/resources/images/**")
+		;
 	}
 
 	@Override
@@ -58,10 +59,20 @@ public class WebSecurityConfiguration  extends WebSecurityConfigurerAdapter {
 		http
 			.addFilter(preAuthenticatedProcessingFilter())
 			.addFilterAfter(csrfTokenResponseFilter(), CsrfFilter.class)
-			.formLogin().disable()
+			.formLogin()
+				/*
+				 * Since we are using basic authentication to simulate 
+				 * a preauthenticated setup, we can not use full login/logoff features
+				 * as basic authentication is sticky
+				 */
+				.disable()
+				//.defaultSuccessUrl("/index.html")
+			
 			.logout()
 				.deleteCookies("JSESSIONID")
 				.invalidateHttpSession(true)
+				.logoutSuccessUrl("/loggedOut.html")
+				
 			.and()
 				.authenticationProvider(authenticationProvider())
 				.authorizeRequests().anyRequest().authenticated().accessDecisionManager(accessDecisionManager())
