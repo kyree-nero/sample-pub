@@ -12,13 +12,13 @@ public class SpringLoadingWebAppInitializer extends AbstractAnnotationConfigDisp
 
 	@Override
 	protected Class<?>[] getRootConfigClasses() {
-		// TODO Auto-generated method stub
-		return null;
+		return new Class[] { ApplicationConfiguration.class };
 	}
 
 	@Override
 	protected Class<?>[] getServletConfigClasses() {
-		return new Class[] { ApplicationConfiguration.class };
+		
+		return null;
 	}
 
 	@Override

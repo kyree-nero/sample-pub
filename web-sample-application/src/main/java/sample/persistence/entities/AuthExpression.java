@@ -9,6 +9,7 @@ import javax.persistence.Table;
 @Table(name = "AUTH_EXPR")
 public class AuthExpression {
 	
+	
 	@Id @Column private String resource;
 	@Column(name="policy_expr") private String policyExpression;
 	

@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 import org.springframework.security.access.AccessDecisionManager;
 import org.springframework.security.access.AccessDecisionVoter;
 import org.springframework.security.access.vote.UnanimousBased;
@@ -34,12 +35,13 @@ import org.springframework.security.web.csrf.CsrfFilter;
 import sample.services.AuthorizationService;
 import sample.web.security.CsrfTokenResponseFilter;
 import sample.web.security.PersistedExpressionVoter;
+import sample.web.security.PreAuthenticatedLocalTestFilter;
 
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfiguration  extends WebSecurityConfigurerAdapter {
 	@Autowired AuthorizationService authorizationService;
-
+	@Autowired Environment environment;
 	
 	
 	
@@ -47,16 +49,25 @@ public class WebSecurityConfiguration  extends WebSecurityConfigurerAdapter {
 	public void configure(WebSecurity web) throws Exception {
 		super.configure(web);
 		web.ignoring()
-		.antMatchers("/*.html")
-//		.antMatchers("/resources/html/**")
 		.antMatchers("/resources/js/**")
 		.antMatchers("/resources/images/**")
 		;
+	}
+	
+	private boolean hasProfile(String[] activeProfiles, String search) {
+
+		for(String activeProfile:activeProfiles) {
+			if(search.equals(activeProfile)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http
+			
 			.addFilter(preAuthenticatedProcessingFilter())
 			.addFilterAfter(csrfTokenResponseFilter(), CsrfFilter.class)
 			.formLogin()
@@ -79,6 +90,10 @@ public class WebSecurityConfiguration  extends WebSecurityConfigurerAdapter {
 			.and()
 		      .csrf();
 		;
+		
+		if(hasProfile(environment.getActiveProfiles(), "local")){
+			http.addFilterBefore(preAuthenticatedLocalTestFilter(), J2eePreAuthenticatedProcessingFilter.class );
+		}
 		
 		http.exceptionHandling().authenticationEntryPoint(authentionEntryPoint());
 		
@@ -142,6 +157,12 @@ public class WebSecurityConfiguration  extends WebSecurityConfigurerAdapter {
 	@Bean AuthenticationEntryPoint authentionEntryPoint() {
 		return new Http403ForbiddenEntryPoint();
 	}
+	
+	@Bean PreAuthenticatedLocalTestFilter preAuthenticatedLocalTestFilter() throws Exception{
+		PreAuthenticatedLocalTestFilter bean = new PreAuthenticatedLocalTestFilter();
+		return bean;
+	}
+	
 	
 	@Bean J2eePreAuthenticatedProcessingFilter preAuthenticatedProcessingFilter() throws Exception{
 		J2eePreAuthenticatedProcessingFilter bean = new J2eePreAuthenticatedProcessingFilter();

@@ -46,7 +46,7 @@ public class PersistedExpressionVoter implements AccessDecisionVoter<FilterInvoc
 			
 			AuthExpression authExpression =  findMatchingRequestUrlKey(filterInvocation.getRequestUrl());
 			if(authExpression == null) {
-				System.err.println("Access Denied " + filterInvocation.getRequestUrl());
+				System.err.println("Access Denied: no auth expression found for " + filterInvocation.getRequestUrl());
 				return ACCESS_DENIED;
 			}
 			String expressionAsString = authExpression.getPolicyExpression();
@@ -56,7 +56,7 @@ public class PersistedExpressionVoter implements AccessDecisionVoter<FilterInvoc
 			if(hasAccess) {
 				return ACCESS_GRANTED;
 			}else {
-				System.err.println("Access Denied " + filterInvocation.getRequestUrl());
+				System.err.println("Access Denied: auth expression denial " + filterInvocation.getRequestUrl());
 				return ACCESS_DENIED;
 			}
 		

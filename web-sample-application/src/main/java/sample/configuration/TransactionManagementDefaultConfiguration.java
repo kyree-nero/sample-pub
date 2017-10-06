@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.jta.JtaTransactionManager;
 
 @Configuration
-@Profile("default")
+@Profile({"default", "local"})
 @EnableTransactionManagement
 public class TransactionManagementDefaultConfiguration {
 	
