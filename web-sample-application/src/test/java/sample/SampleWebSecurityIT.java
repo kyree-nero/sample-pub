@@ -1,8 +1,12 @@
 package sample;
 
 import org.hamcrest.Matchers;
+import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpSession;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.security.test.context.support.WithSecurityContextTestExecutionListener;
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
@@ -54,10 +58,27 @@ public class SampleWebSecurityIT extends AbstractWebSecurityIT{
 				.contentType(MediaType.APPLICATION_JSON)
 		)
 		.andExpect(MockMvcResultMatchers.status().isOk())
-//		.andExpect(MockMvcResultMatchers.jsonPath("data", Matchers.notNullValue()))
-//		.andExpect(MockMvcResultMatchers.jsonPath("errors", Matchers.nullValue()))
 		.andExpect(MockMvcResultMatchers.jsonPath("id", Matchers.notNullValue()))
 		.andReturn();
+	}
+	
+
+	@WithMockUser(value="user", roles="USERS")
+	@Test public void securedRequestLogout() throws Exception{
+		MockHttpSession session = new MockHttpSession();
+		Assert.assertFalse(session.isInvalid());
+		MvcResult result = mockMvc.perform(
+				MockMvcRequestBuilders.post("/logout", new Object[] {})
+				.with(SecurityMockMvcRequestPostProcessors.csrf())
+				.session(session)
+				.accept(MediaType.APPLICATION_JSON)
+				.contentType(MediaType.APPLICATION_JSON)
+		)
+		.andExpect(MockMvcResultMatchers.status().is3xxRedirection())
+		.andExpect(MockMvcResultMatchers.redirectedUrl("/loggedOut.html"))
+		.andReturn();
+		Assert.assertTrue(session.isInvalid());
+		
 	}
 	
 	
