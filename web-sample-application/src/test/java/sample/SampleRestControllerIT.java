@@ -143,15 +143,4 @@ public class SampleRestControllerIT extends AbstractWebMvcIT{
 	}
 	
 	
-	
-//	
-//	@Test public void testApplicationException() throws Exception {
-//		MvcResult result = mockMvc.perform(
-//				MockMvcRequestBuilders.get("/generateException", new Object[] {}))
-//						
-//		
-//		.andExpect(MockMvcResultMatchers.status().isNotFound())
-//		
-//		.andReturn();
-//	}
 }

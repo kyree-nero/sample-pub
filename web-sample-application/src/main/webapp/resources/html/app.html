@@ -63,18 +63,6 @@
 		$("#confirmUpdate"+id+"DivId").css('display', 'inline-block');
 	}
 	
-// 	function logoutClick(element){
-// 		alert('logout start');
-// 		$.post(
-// 		 		'../../logout', 
-// 		 		null,
-// 		 		function(response) {
-// 		 	    	alert('logout successful');
-		 	    	
-// 		 		}
-// 		 	);
-// 		alert('logout end');
-// 	}
 	function openEntryForAdd(element){
 		var inputObject = document.getElementById("newContent");
 		inputObject.disabled = false;
@@ -96,7 +84,15 @@
 	 	    	location.reload();
 	 		},
 	 	    data: JSON.stringify(sample),
-	 	    contentType: 'json'
+	 	    dataType: 'json',
+	 	    contentType: 'json', 
+	 	    error: function(response){
+	 	    	alert("add unsuccessful ");
+	 	    	var validationInfo = JSON.parse(response.responseText);
+	 	    	alert(validationInfo.errors[0].defaultMessage);
+	 	    	
+	 	    	location.reload();
+	 	    }
 	 	  });
 	 	
 	}
@@ -111,15 +107,24 @@
 	 	sample.version = version;
 	 	
 		
-	 	$.post(
-	 		'../../sample', 
-	 		JSON.stringify(sample), 
-	 		function(response) {
+	 	$.ajax({
+	 	    url: '../../sample',
+	 	    type: 'POST',
+	 	    success: function(response) {
 	 	    	alert('update successful');
 	 	    	location.reload();
-	 		}, 
-	 		'json'
-	 	);
+	 		},
+	 	    data: JSON.stringify(sample),
+	 	    dataType: 'json',
+	 	    contentType: 'json', 
+	 	    error: function(response){
+	 	    	alert("update unsuccessful ");
+	 	    	var validationInfo = JSON.parse(response.responseText);
+	 	    	alert(validationInfo.errors[0].defaultMessage);
+	 	    	
+	 	    	location.reload();
+	 	    }
+	 	  });
 	 	
 		
 	}
@@ -205,7 +210,6 @@
 			<div id='divTableRowHeaderId' class='divTableRow'>
 				<div id='divTableCellHeader1Id' class='divTableCellNoBorder'>&nbsp;</div>
 				<div id='divTableCellHeader2Id' class='divTableCellNoBorder'>&nbsp;</d(c)iv>
-<!-- 				<div id='divTableCellHeader3Id' class='divTableCellNoBorder'><button  onclick="logoutClick(this)">sign out</button></div> -->
 					<div id='divTableCellHeader3Id' class='divTableCellNoBorder'>
 						<form id="logoutFormId" action="../../logout" method="POST">
 							<input id="csrfId" name="_csrf" type="hidden" value="PRETOKEN"/>
