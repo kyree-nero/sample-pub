@@ -2,18 +2,18 @@ This is a web sample application.
 
 The following technologies are used.
 
-Spring Security (PreAuthentication, Persistence backed Authorization, Moderate Security Hardening)
+Spring Security (PreAuthentication, Persistence backed Authorization)
 Spring Mvc (REST, Traditional MVC)
 Spring Data (JPA)
 Jdbc
-Spring Integration Test (Junit)
+Spring Integration Tests (Junit)
 Jquery
 
-The project is fully tested with integration tests, and runs in JBOSS 7 EAP
-
-Links (This assumes you have it running locally)
-
-Start Page: http://localhost:8080/app
-This will show a simple JQUERY page with simple crud and validation functions
-
+The project runs in JBOSS 7 EAP, but could be modified for tomcat with the addition of a context.xml file
 Tip:  To set up users in JBOSS use the addUser script included with in JBOSS's home/bin directory
+
+
+Start Page: http://localhost:8080/app (This assumes you have it running locally)
+
+Jquery/Rest Page: accessible by clicking the 'JQUERY/REST example' link on the start page
+This will show a simple JQUERY page with crud functions
