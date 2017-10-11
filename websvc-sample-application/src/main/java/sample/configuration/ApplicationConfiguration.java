@@ -7,8 +7,11 @@ import org.springframework.context.annotation.Import;
 @Import({
 	PersistenceConfiguration.class, 
 	ServicesConfiguration.class, 
-	WebServiceConfiguration.class})
+	WebServiceConfiguration.class, 
+	WebServiceSecurityConfiguration.class})
 
 public class ApplicationConfiguration {
 
 }
+
+

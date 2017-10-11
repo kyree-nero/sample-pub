@@ -17,13 +17,15 @@ import sample.configuration.PersistenceConfiguration;
 import sample.configuration.ServicesConfiguration;
 import sample.configuration.WebServiceClientConfiguration;
 import sample.configuration.WebServiceConfiguration;
+import sample.configuration.WebServiceSecurityConfiguration;
 
 @ContextConfiguration(loader=AnnotationConfigWebContextLoader.class, 
 	classes= {
 			PersistenceConfiguration.class, 
 			ServicesConfiguration.class, 
 			WebServiceConfiguration.class, 
-			WebServiceClientConfiguration.class
+			WebServiceClientConfiguration.class, 
+			WebServiceSecurityConfiguration.class
 	}
 )
 @WebAppConfiguration 
