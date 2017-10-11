@@ -1,0 +1,4 @@
+This is a sample web-service application
+
+It uses Spring WS, Spring Data JPA and WSSE(UsernameToken).
+
