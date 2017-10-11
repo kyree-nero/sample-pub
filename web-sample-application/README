@@ -4,6 +4,7 @@ The following technologies are used.
 
 -Spring Security (PreAuthentication, Persistence backed Authorization)
 -Spring Mvc (REST, Traditional MVC)
+-Transactions (JTA)
 -Spring Data (JPA)
 -Jdbc
 -Spring Integration Tests (Junit)
