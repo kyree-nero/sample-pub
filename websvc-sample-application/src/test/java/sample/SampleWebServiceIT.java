@@ -9,6 +9,8 @@ import javax.xml.transform.Source;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.oxm.Marshaller;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.ws.test.server.RequestCreators;
 import org.springframework.ws.test.server.ResponseMatchers;
 import org.springframework.xml.transform.StringResult;
@@ -26,8 +28,34 @@ public class SampleWebServiceIT extends AbstractWebServiceIT {
     
     
    
-    
-	@Test public void findSamples() throws Exception {
+	@Test public void findSampleByIdThatIsMissing() throws Exception {
+		//make request
+		FindSampleRequest findSampleRequest = new FindSampleRequest();
+		findSampleRequest.setId(-1);
+		StringResult requestString = new StringResult();
+		marshaller.marshal(findSampleRequest, requestString);
+
+		Document content = loadXMLFrom(requestString.toString());
+		SOAPMessage soapMessage = MessageFactory.newInstance().createMessage();
+		soapMessage.getSOAPBody().addDocument(content);
+		addUsernameTokenSecurityHeader(soapMessage);
+		
+		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+		soapMessage.writeTo(outputStream);
+		String input = new String(outputStream.toByteArray());
+		
+		System.out.println(prettyPrint(input));
+		Source requestPayload = new StringSource(input);
+		
+		
+		
+		//do test
+		mockClient
+	        .sendRequest(RequestCreators.withSoapEnvelope(requestPayload))
+	        .andExpect(ResponseMatchers.serverOrReceiverFault("Please contact your administrator"));
+	}
+	
+	@Test public void findSampleById() throws Exception {
 		//make request
 		FindSampleRequest findSampleRequest = new FindSampleRequest();
 		findSampleRequest.setId(0);
@@ -70,7 +98,7 @@ public class SampleWebServiceIT extends AbstractWebServiceIT {
 	}
 	
 	
-	@Test public void findSamplesWithoutAuthentication() throws Exception {
+	@Test public void findSampleByIdWithoutAuthentication() throws Exception {
 		//make request
 		FindSampleRequest findSampleRequest = new FindSampleRequest();
 		findSampleRequest.setId(0);

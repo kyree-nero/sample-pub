@@ -6,6 +6,7 @@ import org.springframework.ws.server.endpoint.annotation.PayloadRoot;
 import org.springframework.ws.server.endpoint.annotation.RequestPayload;
 import org.springframework.ws.server.endpoint.annotation.ResponsePayload;
 
+import sample.exception.SampleWebServiceException;
 import sample.services.SampleService;
 import samplewkspc.sample_web_service.FindSampleRequest;
 import samplewkspc.sample_web_service.FindSampleResponse;
@@ -19,10 +20,14 @@ public class SampleWebServiceEndpoint {
 	
 	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "findSampleRequest")
 	@ResponsePayload
-	public FindSampleResponse getCountry(@RequestPayload FindSampleRequest request) {
-		FindSampleResponse response = new FindSampleResponse();
-		response.setSample(sampleConverter.convert(sampleService.findSample(request.getId())));
-		return response;
+	public FindSampleResponse findSample(@RequestPayload FindSampleRequest request) {
+		try {
+			FindSampleResponse response = new FindSampleResponse();
+			response.setSample(sampleConverter.convert(sampleService.findSample(request.getId())));
+			return response;
+		}catch(RuntimeException exception) {
+			throw new SampleWebServiceException(exception);
+		}
 	}
 
 }

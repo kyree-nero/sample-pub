@@ -13,7 +13,6 @@ import sample.persistence.repositories.SampleEntryRepository;
 import sample.services.domain.Sample;
 
 @Service
-
 public class SampleServiceImpl implements SampleService {
 
 	@Autowired SampleDao dao;
