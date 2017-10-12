@@ -2,3 +2,4 @@ This is a sample web-service application
 
 It uses Spring WS, Spring Data JPA and WSSE(UsernameToken).
 
+http://localhost:8080/app/samples.wsdl
