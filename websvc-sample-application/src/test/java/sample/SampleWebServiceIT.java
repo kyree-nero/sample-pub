@@ -68,6 +68,31 @@ public class SampleWebServiceIT extends AbstractWebServiceIT {
 	        .andExpect(ResponseMatchers.payload(responsePayload))
 	        .andExpect(ResponseMatchers.validPayload(xsdSchema));
 	}
+	
+	
+	@Test public void findSamplesWithoutAuthentication() throws Exception {
+		//make request
+		FindSampleRequest findSampleRequest = new FindSampleRequest();
+		findSampleRequest.setId(0);
+		StringResult requestString = new StringResult();
+		marshaller.marshal(findSampleRequest, requestString);
+
+		Document content = loadXMLFrom(requestString.toString());
+		SOAPMessage soapMessage = MessageFactory.newInstance().createMessage();
+		soapMessage.getSOAPBody().addDocument(content);
+		
+		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+		soapMessage.writeTo(outputStream);
+		String input = new String(outputStream.toByteArray());
+		
+		System.out.println(prettyPrint(input));
+		Source requestPayload = new StringSource(input);
+		
+		//do test
+		mockClient
+	        .sendRequest(RequestCreators.withSoapEnvelope(requestPayload))
+	        .andExpect(ResponseMatchers.clientOrSenderFault());
+	}
 }
 
 
