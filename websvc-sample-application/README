@@ -1,6 +1,11 @@
 This is a sample web-service application
 
-It uses Spring WS, Spring Data JPA and WSSE(UsernameToken).
+It uses the following 
+-SOAP
+-Spring WS, 
+-Spring Data JPA 
+-WSSE(UsernameToken)
+
 
 http://localhost:8080/app/samples.wsdl
 
