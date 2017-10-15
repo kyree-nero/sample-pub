@@ -14,7 +14,13 @@ import org.springframework.transaction.PlatformTransactionManager;
 
 @Configuration
 @EnableBatchProcessing
-@Import(SimpleBatchJobConfiguration.class)
+@Import(
+	{
+		SimpleBatchJobConfiguration.class, 
+		SimplePartitioningBatchJobConfiguration.class
+	}
+)
+
 public class BatchConfiguration {
 	@Autowired DataSource dataSource;
 	@Autowired PlatformTransactionManager transactionManager;

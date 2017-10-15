@@ -6,7 +6,8 @@ import org.springframework.context.annotation.Import;
 @Configuration
 @Import({
 	PersistenceConfiguration.class, 
-	BatchConfiguration.class})
+	BatchConfiguration.class, 
+	WebConfiguration.class})
 
 public class ApplicationConfiguration {
 

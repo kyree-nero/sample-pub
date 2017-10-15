@@ -1,16 +1,16 @@
---CREATE SEQUENCE SEQ_SAMPLE;
 
-CREATE TABLE SAMPLE (
-	 --id INT not null DEFAULT SEQ_SAMPLE.nextval primary key,
+CREATE TABLE BATCH_SAMPLE (
 	 id bigint auto_increment not null  primary key , 
 	 content VARCHAR(100) not null,
 	 version INT not null,
 ); 
 
-CREATE TABLE AUTH_EXPR(
-	resource 		VARCHAR(200) not null,
-	policy_expr 	VARCHAR(500) not null
-);
+CREATE TABLE BATCH_SAMPLE_OUTPUT (
+	 id bigint auto_increment not null  primary key , 
+	 content VARCHAR(100) not null,
+	 run_id VARCHAR(100) not null,
+	 version INT not null default 0,
+); 
 
 
 COMMIT;

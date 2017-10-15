@@ -13,6 +13,7 @@ import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobParameters;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
@@ -27,30 +28,17 @@ import sample.configuration.PersistenceConfiguration;
 	}
 )
 @TestPropertySource(locations="classpath:application-test.properties")
-public class SimpleBatchJobIT extends AbstractBatchIT{
-	@Autowired @Qualifier("simpleBatchJob") Job simpleBatchJob;
+public class SimplePartitionBatchJobIT extends AbstractBatchIT{
+	@Autowired  @Qualifier("simplePartitionBatchJob") Job simpleBatchJob;
+	@Autowired JdbcOperations jdbcOperations;
 	
 	@Test public void test() throws Exception {
 		JobExecution jobExecution = jobLauncher.run(simpleBatchJob, new JobParameters());
 		Assert.assertEquals(BatchStatus.COMPLETED, jobExecution.getStatus());
 
 		
-		int userCount = 0;
-		XMLInputFactory f = XMLInputFactory.newInstance();
-		XMLStreamReader  streamReader= f.createXMLStreamReader(new FileReader("./target/output.xml"));
-		while(streamReader.hasNext()) {
-			 int eventType = streamReader.next();
-
-			    if(eventType == XMLStreamReader.START_ELEMENT){
-			    	if(streamReader.getLocalName().equals("user")){
-			    		userCount++;
-			    	}
-			       
-			    }
-
-		   
-		}
-		
-		Assert.assertEquals(14, userCount);
+		Assert.assertEquals(10,  jdbcOperations.queryForObject("select count(*) FROM BATCH_SAMPLE", Integer.class).intValue()); 
+		Assert.assertEquals(10,  jdbcOperations.queryForObject("select count(*) FROM BATCH_SAMPLE_OUTPUT", Integer.class).intValue()); 
+		Assert.assertEquals(5,  jdbcOperations.queryForObject("select count(distinct run_id) FROM BATCH_SAMPLE_OUTPUT", Integer.class).intValue()); 
 	}
 }

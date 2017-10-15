@@ -13,6 +13,7 @@ import org.springframework.batch.item.file.mapping.DefaultLineMapper;
 import org.springframework.batch.item.file.transform.DelimitedLineTokenizer;
 import org.springframework.batch.item.xml.StaxEventItemWriter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -30,14 +31,14 @@ public class SimpleBatchJobConfiguration {
 	@Autowired JobBuilderFactory jobBuilderFactory;
 	@Autowired StepBuilderFactory stepBuilderFactory;
 	
-	@Value("input/input.csv")
+	@Value("classpath:input/input.csv")
 	private Resource inputCsv;
 	
 	@Value("file:${output-directory}/output.xml")
 	private Resource outputXml;
 	
 	
-	@Bean public Job simpeBatchJob() {
+	@Bean @Qualifier("simpleBatchJob") public Job simpeBatchJob() {
 		return jobBuilderFactory.get("simpeBatchJob").start(simpleBatchJobStep()).build();
 	}
 	
