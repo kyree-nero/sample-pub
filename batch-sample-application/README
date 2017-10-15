@@ -12,3 +12,4 @@ http://localhost:8080/app/batch/status/{id}
 
 start the job
 http://localhost:8080/app/batch/simplebatchjob/start
+http://localhost:8080/app/batch/simplepartitioningbatchjob/start

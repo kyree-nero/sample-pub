@@ -1,4 +1,4 @@
-package sample.web;
+package sample.web.controllers;
 
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobExecution;
@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class BatchController {
 	@Autowired @Qualifier("simpleBatchJob") Job simpleBatchJob;
+	@Autowired  @Qualifier("simplePartitionBatchJob") Job simplePartitionBatchJob;
 	@Autowired JobLauncher jobLauncher;
 	@Autowired JobExplorer jobExplorer;
 	
@@ -29,6 +30,13 @@ public class BatchController {
 	@ResponseBody
 	public  Long startSimpleBatchJob() throws JobExecutionException {
 		JobExecution jobExecution = jobLauncher.run(simpleBatchJob, new JobParameters());
+		return jobExecution.getId();
+	}
+	
+	@GetMapping(path = "batch/simplepartitioningbatchjob/start", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@ResponseBody
+	public  Long startSimplePartitionBatchJob() throws JobExecutionException {
+		JobExecution jobExecution = jobLauncher.run(simplePartitionBatchJob, new JobParameters());
 		return jobExecution.getId();
 	}
 	

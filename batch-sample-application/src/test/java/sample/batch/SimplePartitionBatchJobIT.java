@@ -29,11 +29,11 @@ import sample.configuration.PersistenceConfiguration;
 )
 @TestPropertySource(locations="classpath:application-test.properties")
 public class SimplePartitionBatchJobIT extends AbstractBatchIT{
-	@Autowired  @Qualifier("simplePartitionBatchJob") Job simpleBatchJob;
+	@Autowired  @Qualifier("simplePartitionBatchJob") Job simplePartitionBatchJob;
 	@Autowired JdbcOperations jdbcOperations;
 	
 	@Test public void test() throws Exception {
-		JobExecution jobExecution = jobLauncher.run(simpleBatchJob, new JobParameters());
+		JobExecution jobExecution = jobLauncher.run(simplePartitionBatchJob, new JobParameters());
 		Assert.assertEquals(BatchStatus.COMPLETED, jobExecution.getStatus());
 
 		
