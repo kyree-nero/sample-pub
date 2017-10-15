@@ -13,6 +13,7 @@ import org.springframework.batch.core.configuration.annotation.StepBuilderFactor
 import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.core.step.builder.SimpleStepBuilder;
 import org.springframework.batch.core.step.builder.StepBuilder;
+import org.springframework.batch.core.step.builder.TaskletStepBuilder;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.ItemWriter;
@@ -31,6 +32,7 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import sample.batch.LocalRangePartitioner;
+import sample.batch.TableCleanupTasklet;
 import sample.batch.domain.SimplePartitioningBatchJobObject;
 import sample.batch.domain.SimplePartitioningBatchJobOutputObject;
 
@@ -40,8 +42,14 @@ public class SimplePartitioningBatchJobConfiguration {
 	@Autowired StepBuilderFactory stepBuilderFactory;
 	@Autowired DataSource dataSource;
 	
-	@Bean @Qualifier("simplePartitionBatchJob") public Job simplePartitionBatchJob(@Qualifier("simplePartitioningBatchJobPartitionStep") Step simplePartitioningBatchJobPartitionStep) {
-		return jobBuilderFactory.get("simplePartitionBatchJob").start(simplePartitioningBatchJobPartitionStep).build();
+	@Bean @Qualifier("simplePartitionBatchJob") public Job simplePartitionBatchJob(
+			@Qualifier("simplePartitioningBatchJobCleanStep") Step simplePartitioningBatchJobCleanStep, 
+			@Qualifier("simplePartitioningBatchJobPartitionStep") Step simplePartitioningBatchJobPartitionStep
+	) {
+		return jobBuilderFactory.get("simplePartitionBatchJob")
+				.start(simplePartitioningBatchJobCleanStep)
+				.next(simplePartitioningBatchJobPartitionStep)
+				.build();
 	}
 	
 	
@@ -57,6 +65,19 @@ public class SimplePartitioningBatchJobConfiguration {
 		return new LocalRangePartitioner();
 	}
 	
+	@Bean TableCleanupTasklet tableCleanupTasklet() {
+		return new TableCleanupTasklet();
+	}
+	
+	@Bean Step simplePartitioningBatchJobCleanStep() {
+		StepBuilder stepBuilder = stepBuilderFactory.get("simplePartitioningBatchJobCleanStep");
+		
+		TaskletStepBuilder taskletStepBuilder = new TaskletStepBuilder(stepBuilder);
+		taskletStepBuilder.tasklet(tableCleanupTasklet());
+		
+		return taskletStepBuilder.build();
+		
+	}
 	@Bean Step simplePartitioningBatchJobStep(
 			ItemReader<SimplePartitioningBatchJobObject> reader, 
 			ItemProcessor<SimplePartitioningBatchJobObject, SimplePartitioningBatchJobOutputObject> processor, 
