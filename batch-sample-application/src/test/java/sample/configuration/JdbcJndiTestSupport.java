@@ -3,6 +3,7 @@ package sample.configuration;
 import java.util.Properties;
 import java.util.UUID;
 
+import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
 import org.springframework.mock.jndi.SimpleNamingContextBuilder;
@@ -13,13 +14,31 @@ import bitronix.tm.TransactionManagerServices;
 import bitronix.tm.resource.jdbc.PoolingDataSource;
 
 public class JdbcJndiTestSupport {
-	public static SimpleNamingContextBuilder initializeJNDI() throws Exception{
+	public final String JNDI_SAMPLEDS = "sampleDS";
+	
+	public SimpleNamingContextBuilder initializeJNDI() throws Exception{
 		System.out.println("...initialize JNDI");
 		SimpleNamingContextBuilder context = SimpleNamingContextBuilder.getCurrentContextBuilder();
+		
 		
 		if(context == null) {
 			context = SimpleNamingContextBuilder.emptyActivatedContextBuilder();
 		}
+		
+		
+		boolean foundObject  = false;
+		try {
+			new InitialContext().lookup(JNDI_SAMPLEDS);
+			foundObject  = true;
+		}catch(NamingException namingException) {
+			foundObject  = false;
+		}
+		
+		if(foundObject) {
+			return context;
+		}
+		
+		
 		
 //		JdbcDataSource dataSource = new JdbcDataSource();
 //		dataSource.setURL("jdbc:h2:mem:example;"
@@ -62,7 +81,7 @@ public class JdbcJndiTestSupport {
 		
 	}
 	
-	public static void cleanupJNDI() throws NamingException{
+	public void cleanupJNDI() throws NamingException{
 		System.out.println("...cleanup JNDI");
 		SimpleNamingContextBuilder.emptyActivatedContextBuilder();
 	}
