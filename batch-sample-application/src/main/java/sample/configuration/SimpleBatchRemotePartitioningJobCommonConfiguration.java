@@ -85,6 +85,7 @@ public class SimpleBatchRemotePartitioningJobCommonConfiguration {
 				obj.setId(item.getId());
 				obj.setContent(item.getContent());
 				obj.setRunGroupName(executorId);
+				System.out.println("id " + obj.getId() + " | content " + obj.getContent() + " | runId " + obj.getRunGroupName());
 				return obj;
 			}
 			
@@ -108,6 +109,7 @@ public class SimpleBatchRemotePartitioningJobCommonConfiguration {
 				sqlParameterSource.addValue("id", obj.getId());
 				sqlParameterSource.addValue("content", obj.getContent());
 				sqlParameterSource.addValue("runId", obj.getRunGroupName());
+				System.out.println("id " + obj.getId() + " | content " + obj.getContent() + " | runId " + obj.getRunGroupName());
 				return sqlParameterSource;
 			}
 		});

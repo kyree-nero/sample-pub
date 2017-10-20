@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class BatchController {
 	@Autowired @Qualifier("simpleBatchJob") Job simpleBatchJob;
 	@Autowired  @Qualifier("simplePartitionBatchJob") Job simplePartitionBatchJob;
+	@Autowired  @Qualifier("simpleRemotePartitionBatchJob") Job simpleRemotePartitionBatchJob;
 	@Autowired JobLauncher jobLauncher;
 	@Autowired JobExplorer jobExplorer;
 	
@@ -37,6 +38,13 @@ public class BatchController {
 	@ResponseBody
 	public  Long startSimplePartitionBatchJob() throws JobExecutionException {
 		JobExecution jobExecution = jobLauncher.run(simplePartitionBatchJob, new JobParameters());
+		return jobExecution.getId();
+	}
+	
+	@GetMapping(path = "batch/simpleremotepartitioningbatchjob/start", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@ResponseBody
+	public  Long startSimpleRemotePartitionBatchJob() throws JobExecutionException {
+		JobExecution jobExecution = jobLauncher.run(simpleRemotePartitionBatchJob, new JobParameters());
 		return jobExecution.getId();
 	}
 	

@@ -12,7 +12,22 @@
 		<spring.batch.version>3.0.5.RELEASE</spring.batch.version>
 		<spring.batch.integration.version>3.0.8.RELEASE</spring.batch.integration.version>
 		<spring.integration.version>4.3.12.RELEASE</spring.integration.version>
+		 <version.jboss.bom.eap>7.0.0.GA</version.jboss.bom.eap>
+		
 	</properties>
+	 <repositories>
+        <repository>
+            <id>jboss-enterprise-maven-repository</id>
+            <url>https://maven.repository.redhat.com/ga/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+	
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
@@ -58,10 +73,17 @@
 			    <version>1.1.1</version>
 			</dependency>
 			<dependency>
+                <groupId>org.jboss.bom</groupId>
+                <artifactId>jboss-eap-javaee7</artifactId>
+                <version>${version.jboss.bom.eap}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+			<dependency>
 			    <groupId>org.apache.activemq</groupId>
 			    <artifactId>activemq-core</artifactId>
 			    <version>5.6.0</version>
-<!-- 			    <scope>test</scope> -->
+				<scope>test</scope>
 			    <exclusions>
 			    	<exclusion>
 			    		<groupId>commons-logging</groupId>
@@ -125,6 +147,11 @@
 	</dependencyManagement>
 
 	<dependencies>
+		<dependency>
+            <groupId>org.jboss.eap</groupId>
+            <artifactId>wildfly-jms-client-bom</artifactId>
+            <type>pom</type>
+        </dependency>
 		<dependency>
 			    <groupId>com.jayway.awaitility</groupId>
 			    <artifactId>awaitility</artifactId>
@@ -362,7 +389,22 @@
 
 				</executions>
 			</plugin>
-			
+			<plugin>
+						<artifactId>maven-war-plugin</artifactId>
+						<version>2.2</version>
+						<configuration>
+							<failOnMissingWebXml>false</failOnMissingWebXml>
+						</configuration>
+						<executions>
+							<execution>
+								<id>default-war</id>
+								<phase>package</phase>
+								<goals>
+									<goal>war</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
 		</plugins>
 
 	</build>
@@ -379,7 +421,7 @@
 						<version>2.2</version>
 						<configuration>
 							<failOnMissingWebXml>false</failOnMissingWebXml>
-							<warName>${project.name}-local-master</warName>
+ 							<warName>batch-sample-application-master</warName>
 						</configuration>
 						<executions>
 							<execution>
@@ -414,7 +456,8 @@
 						<version>2.2</version>
 						<configuration>
 							<failOnMissingWebXml>false</failOnMissingWebXml>
-							<warName>${project.name}-local-slave</warName>
+ 							<warName>batch-sample-application-slave</warName>
+							<webappDirectory>src/main/local-slave/webapp</webappDirectory>
 						</configuration>
 						<executions>
 							<execution>
@@ -437,76 +480,7 @@
 				</resources>
 			</build>
 		</profile>
-		<profile>
-			<id>default-master</id>
-			<activation>
-				<activeByDefault>true</activeByDefault>
-			</activation>
-			<build>	
-				<plugins>
-					<plugin>
-						<artifactId>maven-war-plugin</artifactId>
-						<version>2.2</version>
-						<configuration>
-							<failOnMissingWebXml>false</failOnMissingWebXml>
-							<warName>${project.build.finalName}-${profile.id}</warName>
-						</configuration>
-						<executions>
-							<execution>
-								<id>default-war</id>
-								<phase>package</phase>
-								<goals>
-									<goal>war</goal>
-								</goals>
-							</execution>
-						</executions>
-					</plugin>
-				</plugins>
-				<resources>
-					<resource>
-						<directory>src/main/resources</directory>
-					</resource>
-					<resource>
-						<directory>src/main/default-master/resources</directory>
-					</resource>	
-				</resources>
-			</build>
-		</profile>
-		<profile>
-			<id>default-slave</id>
-			<activation>
-				<activeByDefault>false</activeByDefault>
-			</activation>
-			<build>
-				<plugins>
-					<plugin>
-						<artifactId>maven-war-plugin</artifactId>
-						<version>2.2</version>
-						<configuration>
-							<failOnMissingWebXml>false</failOnMissingWebXml>
-							<warName>${project.build.finalName}-${profile.id}</warName>
-						</configuration>
-						<executions>
-							<execution>
-								<id>default-war</id>
-								<phase>package</phase>
-								<goals>
-									<goal>war</goal>
-								</goals>
-							</execution>
-						</executions>
-					</plugin>
-				</plugins>
-				<resources>
-					<resource>
-						<directory>src/main/resources</directory>
-					</resource>
-					<resource>
-						<directory>src/main/default-slave/resources</directory>
-					</resource>
-				</resources>
-			</build>
-		</profile>
+	
 	</profiles>
 
 </project>
