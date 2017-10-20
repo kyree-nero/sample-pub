@@ -13,7 +13,7 @@
 		<spring.batch.integration.version>3.0.8.RELEASE</spring.batch.integration.version>
 		<spring.integration.version>4.3.12.RELEASE</spring.integration.version>
 		<version.jboss.bom.eap>7.0.0.GA</version.jboss.bom.eap>
-
+		
 	</properties>
 	<repositories>
 		<repository>
@@ -391,7 +391,12 @@
 			</plugin>
 
 		</plugins>
-
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
 	</build>
 	<profiles>
 		<profile>
@@ -399,6 +404,9 @@
 			<activation>
 				<activeByDefault>false</activeByDefault>
 			</activation>
+			<properties>
+				<spring.profiles.active>local,master</spring.profiles.active>
+			</properties>
 			<build>
 				<plugins>
 					<plugin>
@@ -429,14 +437,7 @@
 						</executions>
 					</plugin>
 				</plugins>
-				<resources>
-					<resource>
-						<directory>src/main/resources</directory>
-					</resource>
-					<resource>
-						<directory>src/main/local-master/resources</directory>
-					</resource>
-				</resources>
+				
 			</build>
 		</profile>
 		<profile>
@@ -444,6 +445,9 @@
 			<activation>
 				<activeByDefault>false</activeByDefault>
 			</activation>
+			<properties>
+				<spring.profiles.active>local,slave</spring.profiles.active>
+			</properties>
 			<build>
 				<plugins>
 					<plugin>
@@ -474,14 +478,7 @@
 						</executions>
 					</plugin>
 				</plugins>
-				<resources>
-					<resource>
-						<directory>src/main/resources</directory>
-					</resource>
-					<resource>
-						<directory>src/main/local-slave/resources</directory>
-					</resource>
-				</resources>
+				
 			</build>
 		</profile>
 
