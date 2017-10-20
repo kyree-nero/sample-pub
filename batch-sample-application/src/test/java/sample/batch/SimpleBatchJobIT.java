@@ -20,13 +20,7 @@ import org.springframework.test.context.support.AnnotationConfigContextLoader;
 import sample.configuration.BatchConfiguration;
 import sample.configuration.PersistenceConfiguration;
 
-@ContextConfiguration(loader=AnnotationConfigContextLoader.class, 
-	classes= {
-			PersistenceConfiguration.class, 
-			BatchConfiguration.class
-	}
-)
-@TestPropertySource(locations="classpath:application-test.properties")
+
 public class SimpleBatchJobIT extends AbstractBatchIT{
 	@Autowired @Qualifier("simpleBatchJob") Job simpleBatchJob;
 	

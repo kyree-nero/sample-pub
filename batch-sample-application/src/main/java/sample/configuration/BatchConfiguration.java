@@ -17,7 +17,9 @@ import org.springframework.transaction.PlatformTransactionManager;
 @Import(
 	{
 		SimpleBatchJobConfiguration.class, 
-		SimplePartitioningBatchJobConfiguration.class
+		SimplePartitioningBatchJobConfiguration.class, 
+		SimpleBatchRemotePartitioningJobMasterConfiguration.class, 
+		SimpleBatchRemotePartitioningJobSlaveConfiguration.class
 	}
 )
 
