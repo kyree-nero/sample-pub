@@ -26,9 +26,9 @@
 			</snapshots>
 		</repository>
 	</repositories>
-
 	<dependencyManagement>
 		<dependencies>
+			<!-- boms -->
 			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-framework-bom</artifactId>
@@ -36,6 +36,21 @@
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
+			<dependency>
+				<groupId>org.springframework.integration</groupId>
+				<artifactId>spring-integration-bom</artifactId>
+				<version>${spring.integration.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.jboss.bom</groupId>
+				<artifactId>jboss-eap-javaee7</artifactId>
+				<version>${version.jboss.bom.eap}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<!-- regular jars -->
 			<dependency>
 				<groupId>org.springframework.batch</groupId>
 				<artifactId>spring-batch-core</artifactId>
@@ -47,35 +62,14 @@
 				<version>${spring.batch.integration.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>org.springframework.integration</groupId>
-				<artifactId>spring-integration-bom</artifactId>
-				<version>${spring.integration.version}</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-			<dependency>
 				<groupId>org.springframework.data</groupId>
 				<artifactId>spring-data-jpa</artifactId>
 				<version>1.11.0.RELEASE</version>
 			</dependency>
 			<dependency>
-				<groupId>com.jayway.awaitility</groupId>
-				<artifactId>awaitility</artifactId>
-				<version>1.7.0</version>
-				<scope>test</scope>
-			</dependency>
-
-			<dependency>
 				<groupId>org.apache.geronimo.specs</groupId>
 				<artifactId>geronimo-jms_1.1_spec</artifactId>
 				<version>1.1.1</version>
-			</dependency>
-			<dependency>
-				<groupId>org.jboss.bom</groupId>
-				<artifactId>jboss-eap-javaee7</artifactId>
-				<version>${version.jboss.bom.eap}</version>
-				<type>pom</type>
-				<scope>import</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.activemq</groupId>
@@ -104,7 +98,6 @@
 				<artifactId>hibernate-jpa-2.1-api</artifactId>
 				<version>1.0.0.Final</version>
 			</dependency>
-
 			<dependency>
 				<groupId>org.codehaus.btm</groupId>
 				<artifactId>btm</artifactId>
@@ -149,10 +142,6 @@
 			<groupId>org.jboss.eap</groupId>
 			<artifactId>wildfly-jms-client-bom</artifactId>
 			<type>pom</type>
-		</dependency>
-		<dependency>
-			<groupId>com.jayway.awaitility</groupId>
-			<artifactId>awaitility</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.activemq</groupId>
@@ -387,95 +376,64 @@
 
 				</executions>
 			</plugin>
-
+			<plugin>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>2.2</version>
+				<configuration>
+					<failOnMissingWebXml>false</failOnMissingWebXml>
+					<warName>${project.artifactId}-${war-prefix}</warName>
+					<webResources>
+						<resource>
+							<filtering>true</filtering>
+							<directory>src/main/webapp/WEB-INF</directory>
+							<targetPath>WEB-INF</targetPath>
+							<includes>
+								<include>jboss-web.xml</include>
+							</includes>
+						</resource>
+					</webResources>
+				</configuration>
+				<executions>
+					<execution>
+						<id>default-war</id>
+						<phase>package</phase>
+						<goals>
+							<goal>war</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 		<resources>
 			<resource>
 				<directory>src/main/resources</directory>
 				<filtering>true</filtering>
 			</resource>
-			
 		</resources>
 	</build>
 	<profiles>
 		<profile>
-			<id>local-master</id>
+			<id>master</id>
 			<activation>
-				<activeByDefault>false</activeByDefault>
+				<activeByDefault>true</activeByDefault>
 			</activation>
 			<properties>
 				<spring.profiles.active>local,master</spring.profiles.active>
 				<jboss-context-root>/app</jboss-context-root>
+				<war-prefix>master</war-prefix>
 			</properties>
-			<build>
-				<plugins>
-					<plugin>
-						<artifactId>maven-war-plugin</artifactId>
-						<version>2.2</version>
-						<configuration>
-							<failOnMissingWebXml>false</failOnMissingWebXml>
-							<warName>batch-sample-application-master</warName>
-							<webResources>
-								<resource>
-									<filtering>true</filtering>
-									<directory>src/main/webapp/WEB-INF</directory>
-									<targetPath>WEB-INF</targetPath>
-									<includes>
-										<include>jboss-web.xml</include>
-									</includes>
-								</resource>
-							</webResources>
-							
-						</configuration>
-						
-					</plugin>
-				</plugins>
-				
-			</build>
 		</profile>
 		<profile>
-			<id>local-slave</id>
+			<id>slave</id>
 			<activation>
 				<activeByDefault>false</activeByDefault>
 			</activation>
 			<properties>
 				<spring.profiles.active>local,slave</spring.profiles.active>
 				<jboss-context-root>/app-slave</jboss-context-root>
+				<war-prefix>slave</war-prefix>
 			</properties>
-			<build>
-				<plugins>
-					<plugin>
-						<artifactId>maven-war-plugin</artifactId>
-						<version>2.2</version>
-						<configuration>
-							<failOnMissingWebXml>false</failOnMissingWebXml>
-							<warName>batch-sample-application-slave</warName>
-							<webResources>
-								<resource>
-									<filtering>true</filtering>
-									<directory>src/main/webapp/WEB-INF</directory>
-									<targetPath>WEB-INF</targetPath>
-									<includes>
-										<include>jboss-web.xml</include>
-									</includes>
-								</resource>
-							</webResources>
-						</configuration>
-						<executions>
-							<execution>
-								<id>default-war</id>
-								<phase>package</phase>
-								<goals>
-									<goal>war</goal>
-								</goals>
-							</execution>
-						</executions>
-					</plugin>
-				</plugins>
-				
-			</build>
 		</profile>
-
 	</profiles>
 
 </project>
