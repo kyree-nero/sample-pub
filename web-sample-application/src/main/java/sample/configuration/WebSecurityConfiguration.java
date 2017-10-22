@@ -91,7 +91,7 @@ public class WebSecurityConfiguration  extends WebSecurityConfigurerAdapter {
 		      .csrf();
 		;
 		
-		if(hasProfile(environment.getActiveProfiles(), "local")){
+		if(!hasProfile(environment.getActiveProfiles(), "test")){
 			http.addFilterBefore(preAuthenticatedLocalTestFilter(), J2eePreAuthenticatedProcessingFilter.class );
 		}
 		

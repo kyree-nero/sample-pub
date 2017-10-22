@@ -41,7 +41,7 @@ public class SpringLoadingWebAppInitializer extends AbstractAnnotationConfigDisp
 	@Override
 	protected WebApplicationContext createRootApplicationContext() {
 		WebApplicationContext context = super.createRootApplicationContext();
-		Properties properties = readProperties("servlet.properties");
+		Properties properties = readProperties("application.properties");
 		
 		if(properties != null) {
 			String springProfilesPropertyValue = properties.getProperty("spring.profiles.active");
