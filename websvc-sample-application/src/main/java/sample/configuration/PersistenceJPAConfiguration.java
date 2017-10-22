@@ -52,7 +52,7 @@ public class PersistenceJPAConfiguration {
 	 }
 	 
 	 
-	 @Bean @Profile({"default", "local"})  public LocalContainerEntityManagerFactoryBean entityManagerFactory(DataSource dataSource) {
+	 @Bean @Profile({"!test"})  public LocalContainerEntityManagerFactoryBean entityManagerFactory(DataSource dataSource) {
 	        LocalContainerEntityManagerFactoryBean entityManagerFactoryBean = new LocalContainerEntityManagerFactoryBean();
 	        entityManagerFactoryBean.setPersistenceProviderClass(HibernatePersistenceProvider.class);
 	        entityManagerFactoryBean.setPackagesToScan("sample.persistence.entities");
@@ -98,7 +98,7 @@ public class PersistenceJPAConfiguration {
 	 
 	 }
 	 
-	 @Bean @Profile({"default", "local"}) public Properties hibProperties() {
+	 @Bean @Profile({"!test"}) public Properties hibProperties() {
 		 
 	        Properties properties = new Properties();
 
