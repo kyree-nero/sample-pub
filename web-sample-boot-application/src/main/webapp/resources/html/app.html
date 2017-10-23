@@ -1,0 +1,261 @@
+<html>
+<head>
+	<title>Sample Web Application</title>
+	<script type="text/javascript" src="../js/jquery-3.2.1.min.js"></script>
+	<style type="text/css">
+ 		.divTable{
+			display: table;
+			width: 500px;
+		}
+		.divTableRow {
+			display: table-row;
+		}
+		.divTableHeading {
+			background-color: #EEE;
+			display: table-header-group;
+		}
+		.divTableCell, .divTableHead {
+			border: 1px solid #999999;
+			display: table-cell;
+			padding: 3px 10px;
+		}
+		.divTableCellNoBorder, .divTableHead {
+			display: table-cell;
+			padding: 3px 10px;
+			align: right
+		}
+		.divTableHeading {
+			background-color: #EEE;
+			display: table-header-group;
+			font-weight: bold;
+		}
+		.divTableFoot {
+			background-color: #EEE;
+			display: table-footer-group;
+			font-weight: bold;
+		}
+		.divTableBody {
+			display: table-row-group;
+		}
+ 	</style>
+</head>
+ 
+<script type="text/javascript">
+	function deleteClick(element, id){
+		
+		$.ajax({
+	 	    url: '../../sample/'+id,
+	 	    type: 'DELETE',
+	 	    success: function(response) {
+	 	    	alert('delete successful');
+	 	    	location.reload();
+	 		},
+	 	   
+	 	    contentType: 'json'
+	 	  });
+		
+		
+	}
+	function openEntryForUpdate(element, id){
+		var inputObject = document.getElementById("contentEdit"+id+"Id");
+		inputObject.disabled = false;
+		
+		$("#confirmUpdate"+id+"DivId").css('display', 'inline-block');
+	}
+	
+	function openEntryForAdd(element){
+		var inputObject = document.getElementById("newContent");
+		inputObject.disabled = false;
+		
+		$("#confirmAddDivId").css('display', 'inline-block');
+	}
+	function addClick(element){
+		var inputObject = document.getElementById("newContent");
+		
+	 	var sample = new Object();
+	 	sample.content = inputObject.value;
+	 	
+	 	
+	 	$.ajax({
+	 	    url: '../../sample',
+	 	    type: 'PUT',
+	 	    success: function(response) {
+	 	    	alert('add successful');
+	 	    	location.reload();
+	 		},
+	 	    data: JSON.stringify(sample),
+	 	    dataType: 'json',
+	 	    contentType: 'json', 
+	 	    error: function(response){
+	 	    	alert("add unsuccessful ");
+	 	    	var validationInfo = JSON.parse(response.responseText);
+	 	    	alert(validationInfo.errors[0].defaultMessage);
+	 	    	
+	 	    	location.reload();
+	 	    }
+	 	  });
+	 	
+	}
+	function updateClick(element, id, version, csrfToken){
+		
+	 	var inputObject = document.getElementById("contentEdit"+id+"Id");
+		
+	 	
+	 	var sample = new Object();
+	 	sample.id = id;
+	 	sample.content = inputObject.value;
+	 	sample.version = version;
+	 	
+		
+	 	$.ajax({
+	 	    url: '../../sample',
+	 	    type: 'POST',
+	 	    success: function(response) {
+	 	    	alert('update successful');
+	 	    	location.reload();
+	 		},
+	 	    data: JSON.stringify(sample),
+	 	    dataType: 'json',
+	 	    contentType: 'json', 
+	 	    error: function(response){
+	 	    	alert("update unsuccessful ");
+	 	    	var validationInfo = JSON.parse(response.responseText);
+	 	    	alert(validationInfo.errors[0].defaultMessage);
+	 	    	
+	 	    	location.reload();
+	 	    }
+	 	  });
+	 	
+		
+	}
+	
+	
+	$(document).ready(
+			
+			function(){
+				var csrfToken;
+	
+				$.ajaxPrefilter(
+						function( options ) {
+						    if ( !options.beforeSend) {
+						        options.beforeSend = function (xhr) { 
+						            xhr.setRequestHeader('X-CSRF-TOKEN', csrfToken);
+	 					            xhr.setRequestHeader('Content-Type', "application/json");
+						        }
+						    }
+						}
+				);
+	
+				$.getJSON( "../../sample", 
+					function( data, status, xhr ) {
+						csrfToken = xhr.getResponseHeader('X-CSRF-TOKEN');
+						var items = [];
+						
+							  	$.each(data, function (index, item) {
+							  		
+								  //console.log(item.content);
+								  items.push("<div id='divTableRowContent"+item.id+"Id' class='divTableRow'>");	
+								  	items.push("<div id='divTableCell1Content"+item.id+"Id' class='divTableCell'>"
+								  					+"<button id='delete"+item.id+"Id' onclick='deleteClick(this, "+item.id+")'><img  height='25' width='25' src='../images/remove.png'/></button>"
+								  				+"</div>");
+								  	items.push("<div id='divTableCell2Content"+item.id+"Id' class='divTableCell'>"
+						  							+"<button id='update"+item.id+"Id' onclick='openEntryForUpdate(this, "+item.id+")'><img  height='25' width='25' src='../images/edit.png'/></button>"
+						  						+"</div>");
+								  	items.push("<div id='divTableCell3Content"+item.id+"Id' class='divTableCell'>" 
+								  				+ "<input type='text' id='contentEdit"+item.id+"Id' width='50' value='"+item.content+"' disabled />"
+								  				+"<div id='confirmUpdate"+item.id+"DivId' style='display:none'>"
+								  					+"<button id='confirmUpdate"+item.id+"Id' onclick=\"updateClick(this, "+item.id+", "+item.version+", '"+csrfToken+"')\">"
+								  						+"<img  height='25' width='25' src='../images/check.png'/>"
+								  					+ "</button>"
+								  					+"<button id='cancel"+item.id+"Id' onclick=\"location.reload();\">"
+							  							+"<img  height='25' width='25' src='../images/cancel.jpeg'/>"
+							  						+ "</button>"
+								  				+ "</div>" 
+								  			+ "</div>" );
+								  items.push("</div>");
+								  
+								});
+						
+							  	
+						$("#csrfId").val(csrfToken);
+						
+						$("div.data").replaceWith(items);
+						
+						$("#newContent").hide();
+						
+						$("#addId").click(
+								function() {
+									$("#newContent").show();
+									$("#confirmAddId").show();
+								}
+						);
+						$("#confirmAddId").click(
+								function() {
+									$("#newContent").hide();
+									$("#confirmAddId").hide();
+								}
+						);
+						
+						
+						$("body").on()
+					}, 
+					
+				);
+		}
+	);
+</script>
+<body>
+	<div class='divTable' >
+		<div class='divTableBody'>
+			<div id='divTableRowHeaderId' class='divTableRow'>
+				<div id='divTableCellHeader1Id' class='divTableCellNoBorder'>&nbsp;</div>
+				<div id='divTableCellHeader2Id' class='divTableCellNoBorder'>&nbsp;</d(c)iv>
+					<div id='divTableCellHeader3Id' class='divTableCellNoBorder'>
+						<form id="logoutFormId" action="../../logout" method="POST">
+							<input id="csrfId" name="_csrf" type="hidden" value="PRETOKEN"/>
+							<button onclick="javascript:submit()">sign off</button>
+						</form>
+					</div>
+			</div>
+		</div>
+	</div>
+	<font color=red> 
+	REST/JQUERY example page<hr/>
+	</font>
+	<font color=blue>
+	Sample Data <br/>
+	<div class='divTable' >
+		<div class='divTableBody'>
+			<div id='divTableRowHeaderId' class='divTableRow'>
+				<div id='divTableCellHeader1Id' class='divTableCell'>&nbsp;</div>
+				<div id='divTableCellHeader2Id' class='divTableCell'>&nbsp;</div>
+				<div id='divTableCellHeader3Id' class='divTableCell'>CONTENT</div>
+			</div>
+			<div class="data">
+			</div>
+			<div id='divTableRowEndId' class='divTableRow'>
+				<div id='divTableCellEnd1Id' class='divTableCell'>
+					<button id='addId' onclick='openEntryForAdd(this)'>
+						<img  height='25' width='25' src='../images/add.png'/>
+					</button>
+				</div>
+				<div id='divTableCellEnd2Id' class='divTableCell'>&nbsp;</div>
+				<div id='divTableCellEnd3Id' class='divTableCell'>
+					<input id='newContent' type='text' width='50' value=''/>
+					<div id='confirmAddDivId' style='display:none'>
+						<button id='confirmAddId' onclick="addClick(this)">
+							<img  height='25' width='25' src='../images/check.png'/>
+						</button>
+						<button id='cancelAddId' onclick="location.reload();">
+							<img  height='25' width='25' src='../images/cancel.jpeg'/>
+						</button>
+					</div>
+				</div>
+			</div>	
+					
+		</div>
+	</div>
+			
+	</font>
+</body>
+</html> 
