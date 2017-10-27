@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<xs:schema 
+	xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+	xmlns:tns="http://samplewkspc/sample-web-service"
+           targetNamespace="http://samplewkspc/sample-web-service" elementFormDefault="qualified">
+
+    <xs:element name="findSampleRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="id" type="xs:long"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    
+    <xs:element name="findSampleResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="sample" type="tns:sample"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:complexType name="sample">
+        <xs:sequence>
+            <xs:element name="id" type="xs:long"/>
+            <xs:element name="content" type="xs:string"/>
+            <xs:element name="version" type="xs:long"/>
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

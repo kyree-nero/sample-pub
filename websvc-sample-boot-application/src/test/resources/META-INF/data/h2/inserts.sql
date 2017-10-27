@@ -1,0 +1,3 @@
+INSERT INTO SAMPLE (ID, CONTENT, VERSION) VALUES (5000, 'hi im going to be deleted', 0);
+INSERT INTO SAMPLE (ID, CONTENT, VERSION) VALUES (0, 'hi im a sample', 0);
+COMMIT; 

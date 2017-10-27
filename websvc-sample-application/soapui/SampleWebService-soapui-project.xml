@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:soapui-project id="b1cd8d22-9f1b-4565-aced-cacea961a527" activeEnvironment="Default" name="SampleWebService" soapui-version="5.3.0" abortOnError="false" runType="SEQUENTIAL" xmlns:con="http://eviware.com/soapui/config"><con:settings/><con:interface xsi:type="con:WsdlInterface" id="f75c8b89-8000-4875-9f3a-91601199e10e" wsaVersion="NONE" name="SamplePortSoap11" type="wsdl" bindingName="{http://samplewkspc/sample-web-service}SamplePortSoap11" soapVersion="1_1" anonymous="optional" definition="http://localhost:8080/app/samples.wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart="http://localhost:8080/app/samples.wsdl"><con:part><con:url>http://localhost:8080/app/samples.wsdl</con:url><con:content><![CDATA[<wsdl:definitions targetNamespace="http://samplewkspc/sample-web-service" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:sch="http://samplewkspc/sample-web-service" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://samplewkspc/sample-web-service">
+  <wsdl:types>
+    <xs:schema elementFormDefault="qualified" targetNamespace="http://samplewkspc/sample-web-service" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+      <xs:element name="findSampleRequest">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="id" type="xs:long"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="findSampleResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="sample" type="tns:sample"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:complexType name="sample">
+        <xs:sequence>
+          <xs:element name="id" type="xs:long"/>
+          <xs:element name="content" type="xs:string"/>
+          <xs:element name="version" type="xs:long"/>
+        </xs:sequence>
+      </xs:complexType>
+    </xs:schema>
+  </wsdl:types>
+  <wsdl:message name="findSampleResponse">
+    <wsdl:part element="tns:findSampleResponse" name="findSampleResponse"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="findSampleRequest">
+    <wsdl:part element="tns:findSampleRequest" name="findSampleRequest"></wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="SamplePort">
+    <wsdl:operation name="findSample">
+      <wsdl:input message="tns:findSampleRequest" name="findSampleRequest"></wsdl:input>
+      <wsdl:output message="tns:findSampleResponse" name="findSampleResponse"></wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="SamplePortSoap11" type="tns:SamplePort">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="findSample">
+      <soap:operation soapAction=""/>
+      <wsdl:input name="findSampleRequest">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="findSampleResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="SamplePortService">
+    <wsdl:port binding="tns:SamplePortSoap11" name="SamplePortSoap11">
+      <soap:address location="http://localhost:8080/app/ws"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>]]></con:content><con:type>http://schemas.xmlsoap.org/wsdl/</con:type></con:part></con:definitionCache><con:endpoints><con:endpoint>http://localhost:8080/app/ws</con:endpoint></con:endpoints><con:operation id="1a232f6d-abbf-44b5-bd7f-ede62a46fddf" isOneWay="false" action="" name="findSample" bindingOperationName="findSample" type="Request-Response" outputName="findSampleResponse" inputName="findSampleRequest" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call id="d8c07881-4e76-4059-9ed0-947aa94bc149" name="Request 1"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/app/samples?wsdl</con:endpoint><con:request><![CDATA[<soapenv:Envelope 
+	xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" 
+	xmlns:sam="http://samplewkspc/sample-web-service"
+	xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd"
+>
+   <soapenv:Header>
+   	<wsse:Security>
+            <wsse:UsernameToken>
+                <wsse:Username>joe</wsse:Username>
+                <wsse:Password>blow</wsse:Password>
+            </wsse:UsernameToken>
+        </wsse:Security>
+   </soapenv:Header>
+   <soapenv:Body>
+      <sam:findSampleRequest>
+         <sam:id>4</sam:id>
+      </sam:findSampleRequest>
+   </soapenv:Body>
+</soapenv:Envelope>
+]]></con:request><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://samplewkspc/sample-web-service/SamplePort/findSampleRequest"/><con:wsrmConfig version="1.2"/></con:call></con:operation></con:interface><con:properties/><con:wssContainer/><con:oAuth2ProfileContainer/><con:oAuth1ProfileContainer/></con:soapui-project>
