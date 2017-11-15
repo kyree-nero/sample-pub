@@ -31,7 +31,7 @@ public abstract class AbstractBaseIT {
 	public final static String BROKER_URL ="vm://transport";
 	public final static String JNDI_DS = "java:jdbc/dataSource";
 	public final static String JNDI_JMS_CONNFACTORY = "java:jms/connectionFactory";
-	public final static String JNDI_JMS_QUEUE = "java:jms/batchQueue";
+	public final static String JNDI_JMS_QUEUE = "java:jms/queue/batchQueue";
 			
 	@BeforeClass public static void beforeClass() throws Exception{
 		System.out.println("..initialize JNDI");
@@ -43,7 +43,7 @@ public abstract class AbstractBaseIT {
 		}
 		
 		initializeDataSource();
-		
+		initializeJms();
 	}
 	
 	public static void initializeDataSource() throws Exception {
