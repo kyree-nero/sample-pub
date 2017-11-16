@@ -21,44 +21,27 @@
 		    <artifactId>h2</artifactId>
 		    <version>1.4.193</version>
   		</dependency>
-<!--   		<dependency> -->
-<!-- 			<groupId>org.springframework.batch</groupId> -->
-<!-- 			<artifactId>spring-batch-core</artifactId> -->
-<!-- 			<version>${spring-batch.version}</version> -->
-<!-- 		</dependency> -->
-<!--   		<dependency> -->
-<!--         	<groupId>org.springframework.batch</groupId> -->
-<!--   			<artifactId>spring-batch-admin-manager</artifactId> -->
-<!--         	<version>1.3.1.RELEASE</version> -->
-<!--         </dependency> -->
-  		<dependency>
-			<groupId>org.apache.activemq</groupId>
-			<artifactId>activemq-core</artifactId>
-			<version>5.7.0</version>
-			<exclusions>
-				<exclusion>
-					<groupId>commons-logging</groupId>
-					<artifactId>commons-logging</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.geronimo.specs</groupId>
-			<artifactId>geronimo-jms_1.1_spec</artifactId>
-			<version>1.1.1</version>
-		</dependency>
   	</dependencies>
   	</dependencyManagement>
   	
-  	 <dependencies>
-  	 	<dependency>
-			<groupId>org.apache.geronimo.specs</groupId>
-			<artifactId>geronimo-jms_1.1_spec</artifactId>
+  	 <dependencies>	
+  	 	 <dependency>
+		    <groupId>org.apache.activemq</groupId>
+		    <artifactId>activemq-kahadb-store</artifactId>
 		</dependency>
-  	 	<dependency>
-			<groupId>org.apache.activemq</groupId>
-			<artifactId>activemq-core</artifactId>
+  	 	  <dependency>
+			<groupId>org.springframework.integration</groupId>
+			<artifactId>spring-integration-jms</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework.batch</groupId>
+			<artifactId>spring-batch-integration</artifactId>
+		</dependency>
+  	 	  <dependency>
+		      <groupId>org.springframework.boot</groupId>
+		      <artifactId>spring-boot-starter-activemq</artifactId>
+		</dependency>
+  	 	
   		<dependency>
   			<groupId>org.springframework.boot</groupId>
   			<artifactId>spring-boot-starter-web</artifactId>
@@ -76,7 +59,12 @@
   		<dependency>
   			<groupId>org.springframework.boot</groupId>
   			<artifactId>spring-boot-starter-batch</artifactId>
-  		</dependency>	
+  		</dependency>
+  		<dependency>
+  			<groupId>org.springframework.boot</groupId>
+  			<artifactId>spring-boot-starter-integration</artifactId>
+  		</dependency>
+  		
   		<dependency>
   			<groupId>com.h2database</groupId>
 		    <artifactId>h2</artifactId>
@@ -242,18 +230,7 @@
 				</executions>
 			</plugin>
 			
-			<plugin>
-		      <groupId>org.springframework.boot</groupId>
-		      <artifactId>spring-boot-maven-plugin</artifactId>
-		      <version>1.5.8.RELEASE</version>
-		      <executions>
-		        <execution>
-		          <goals>
-		            <goal>repackage</goal>
-		          </goals>
-		        </execution>
-		      </executions>
-		    </plugin>
+			
 		</plugins>
 		<resources>
 					<resource>
@@ -263,5 +240,60 @@
 		</resources>
 
 	</build>
-  	
+  	<profiles>
+  		<profile>
+  			<id>master</id>
+  			<activation>
+  				<activeByDefault>true</activeByDefault>
+  			</activation>
+  			<build>
+  				<plugins>
+  					<plugin>
+				      <groupId>org.springframework.boot</groupId>
+				      <artifactId>spring-boot-maven-plugin</artifactId>
+				      <version>1.5.8.RELEASE</version>
+				      <configuration>
+		          		<profiles>
+		            		<profile>master</profile>
+		            	</profiles>
+		              </configuration>
+				      <executions>
+				        <execution>
+				          <goals>
+				            <goal>repackage</goal>
+				          </goals>
+				        </execution>
+				      </executions>
+				    </plugin>
+  				</plugins>
+  			</build>
+  		</profile>
+  		<profile>
+  			<id>slave</id>
+  			<activation>
+  				<activeByDefault>false</activeByDefault>
+  			</activation>
+  			<build>
+  				<plugins>
+  					<plugin>
+				      <groupId>org.springframework.boot</groupId>
+				      <artifactId>spring-boot-maven-plugin</artifactId>
+				      <version>1.5.8.RELEASE</version>
+				      <configuration>
+		          		<profiles>
+		            		<profile>slave</profile>
+		            	</profiles>
+		              </configuration>
+				      <executions>
+				        <execution>
+				          <goals>
+				            <goal>repackage</goal>
+				          </goals>
+				        </execution>
+				      </executions>
+				    </plugin>
+  				</plugins>
+  			</build>
+  		</profile>
+  	</profiles>
 </project>

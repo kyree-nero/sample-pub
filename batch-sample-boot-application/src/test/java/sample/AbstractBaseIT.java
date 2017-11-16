@@ -4,9 +4,9 @@ package sample;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
+import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.activemq.broker.BrokerService;
 import org.apache.activemq.command.ActiveMQQueue;
-import org.apache.activemq.spring.ActiveMQConnectionFactory;
 import org.h2.jdbcx.JdbcDataSource;
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
@@ -19,7 +19,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest//(webEnvironment=SpringBootTest.WebEnvironment.MOCK)
-@ActiveProfiles("test")
+@ActiveProfiles({"test", "master"})
 @TestPropertySource("/application-test.properties")
 @Sql({
 	"/META-INF/data/h2/drops.sql", 
@@ -100,7 +100,7 @@ public abstract class AbstractBaseIT {
 		
 		ActiveMQConnectionFactory jmsConnectionFactory = new ActiveMQConnectionFactory();
 		jmsConnectionFactory.setBrokerURL(BROKER_URL);
-		jmsConnectionFactory.afterPropertiesSet();
+		//jmsConnectionFactory.afterPropertiesSet();
 		
 		context.bind(JNDI_JMS_CONNFACTORY, jmsConnectionFactory);
 		
