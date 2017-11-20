@@ -86,6 +86,7 @@ public class SimpleBatchRemotePartitioningJobCommonConfiguration {
 				obj.setContent(item.getContent());
 				obj.setRunGroupName(executorId);
 				System.out.println("id " + obj.getId() + " | content " + obj.getContent() + " | runId " + obj.getRunGroupName());
+				Thread.sleep(100);
 				return obj;
 			}
 			
