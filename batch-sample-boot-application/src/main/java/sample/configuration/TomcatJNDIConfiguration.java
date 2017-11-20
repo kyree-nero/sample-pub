@@ -1,6 +1,4 @@
 package sample.configuration;
-import java.util.Arrays;
-
 import org.apache.catalina.Context;
 import org.apache.catalina.startup.Tomcat;
 import org.apache.tomcat.util.descriptor.web.ContextResource;

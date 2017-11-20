@@ -4,7 +4,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import javax.sql.DataSource;
-import javax.swing.tree.TreePath;
 
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;

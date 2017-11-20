@@ -4,11 +4,8 @@ package sample;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
-import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.activemq.broker.BrokerService;
-import org.apache.activemq.command.ActiveMQQueue;
 import org.h2.jdbcx.JdbcDataSource;
-import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -31,9 +28,7 @@ public abstract class AbstractBaseIT {
 	protected static SimpleNamingContextBuilder context = null;
 	public final static String BROKER_URL ="vm://transport";
 	public final static String JNDI_DS = "java:jdbc/dataSource";
-	public final static String JNDI_JMS_CONNFACTORY = "java:jms/connectionFactory";
-	public final static String JNDI_JMS_QUEUE = "java:jms/queue/batchQueue";
-			
+		
 	
 	public static BrokerService brokerService;
 	
@@ -47,7 +42,6 @@ public abstract class AbstractBaseIT {
 		}
 		
 		initializeDataSource();
-		initializeJms();
 	}
 	
 //	@AfterClass public static void afterClass()  throws Exception{
@@ -82,45 +76,6 @@ public abstract class AbstractBaseIT {
 		
 	}
 	
-	public static void initializeJms() throws Exception {
-		System.out.println("..initialize JMS DataSource");
-		
-		boolean foundObject  = false;
-		try {
-			new InitialContext().lookup(JNDI_JMS_CONNFACTORY);
-			foundObject  = true;
-		}catch(NamingException namingException) {
-			foundObject  = false;
-		}
-		
-		if(foundObject) {
-			return;
-		}
-		
 	
-//		brokerService = new BrokerService();
-//		brokerService.setBrokerName("localhost");
-//		brokerService.setUseJmx(false);
-//		brokerService.setUseShutdownHook(false);
-//		brokerService.setPersistent(false);
-//		brokerService.setTransportConnectorURIs(new String[] {BROKER_URL});
-//		brokerService.start();
-		
-		ActiveMQConnectionFactory jmsConnectionFactory = new ActiveMQConnectionFactory();
-		jmsConnectionFactory.setTrustAllPackages(true);
-		jmsConnectionFactory.setBrokerURL(BROKER_URL);
-		//jmsConnectionFactory.afterPropertiesSet();
-		
-		context.bind(JNDI_JMS_CONNFACTORY, jmsConnectionFactory);
-		
-		ActiveMQQueue batchQueue = new ActiveMQQueue("batchQueue");
-		context.bind(JNDI_JMS_QUEUE, batchQueue);
-
-	}
-	
-	
-//	public static void tearDownJms() throws Exception{
-//		brokerService.stop();
-//	}
 	
 }
