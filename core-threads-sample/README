@@ -1,0 +1,9 @@
+This will house all of my core thread samples.
+
+For now there is only one.   
+
+Simple Producer/Consumer Example
+There is one producer that produces more widgets for a set amount 
+of times each time a widget container is empty.  There are a few 
+widget consumers that empty it in short order.
+
