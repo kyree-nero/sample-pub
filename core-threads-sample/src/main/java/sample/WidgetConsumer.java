@@ -1,6 +1,7 @@
 package sample;
 
 import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class WidgetConsumer implements Runnable {
@@ -18,37 +19,33 @@ public class WidgetConsumer implements Runnable {
 	
 	@Override
 	public void run() {
-		int eaten= 0;
-		while(widgetProducerOpen.get() == true && eaten < threshold ) {
-			
-				boolean foundWidget = false;
-				System.out.println("WidgetConsumer "+id+" looking for widgets");
-				synchronized (widgetQueue) {
-					System.out.println("WidgetConsumer "+id+" approaching widget container");
-					if(!widgetQueue.isEmpty()) {
-						widgetQueue.poll();
-						foundWidget = true;
+		try {
+			int eaten= 0;
+			while(widgetProducerOpen.get() == true && eaten < threshold ) {
+					System.out.println("WidgetConsumer "+id+" looking for widgets");
+					
+					Widget widget = widgetQueue.poll(3, TimeUnit.SECONDS);
+					if(widget != null) {
+						
+						System.out.println("...consuming");
+						eaten ++;
+						
+							Thread.sleep(new Double(1000 * Math.random()).longValue());
+						
+						System.out.println("...consumed");
+					}else {
+						System.out.println("waiting for widgets");
+						try {
+							Thread.sleep(new Double(1000 * Math.random()).longValue());
+						} catch (InterruptedException e) {
+							Thread.currentThread().interrupt();
+						}
+						System.out.println("done waiting for widgets");
 					}
-				}
-				if(foundWidget) {
-					System.out.println("...consuming");
-					eaten ++;
-					try {
-						Thread.sleep(new Double(1000 * Math.random()).longValue());
-					} catch (InterruptedException e) {
-						Thread.currentThread().interrupt();
-					}
-					System.out.println("...consumed");
-				}else {
-					System.out.println("waiting for widgets");
-					try {
-						Thread.sleep(new Double(1000 * Math.random()).longValue());
-					} catch (InterruptedException e) {
-						Thread.currentThread().interrupt();
-					}
-					System.out.println("done waiting for widgets");
-				}
-			
+				
+			}
+		} catch (InterruptedException e) {
+			Thread.currentThread().interrupt();
 		}
 		System.out.println("end WidgetConsumer "+id);
 	}

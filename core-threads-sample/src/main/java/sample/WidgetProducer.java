@@ -42,6 +42,7 @@ public class WidgetProducer implements Runnable{
 			
 		}
 		System.out.println("closing shop");
+		
 		widgetProducerOpen.set(false);
 	}
 
