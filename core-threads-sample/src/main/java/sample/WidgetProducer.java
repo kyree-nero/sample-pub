@@ -19,8 +19,9 @@ public class WidgetProducer implements Runnable{
 		System.out.println("starting shop");
 		int batchesMade = 0;
 		while(batchesMade < maxBatchesToMake || !widgetQueue.isEmpty() ) {
+			System.out.println("WidgetProducer looking for widgets");
 			synchronized(widgetQueue) {
-				System.out.println("WidgetProducer looking for widgets");
+				System.out.println("WidgetProducer approaching widget container");
 				if(widgetQueue.size() == 0) {
 					int currentCount = 0;
 					System.out.println("...making widgets");

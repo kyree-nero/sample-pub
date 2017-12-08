@@ -8,7 +8,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
-public class SimpleThreadsApplication {
+public class SimpleProducerConsumerApplication {
 
 	
 	
@@ -29,6 +29,8 @@ public class SimpleThreadsApplication {
 		consumers.stream().forEach(e -> executor.execute(e));
 		
 		executor.shutdown();
+		
+		
 	}
 
 }
