@@ -10,7 +10,6 @@ public class WidgetProducer implements Runnable{
 	}
 	private AtomicBoolean widgetProducerOpen;
 	private ArrayBlockingQueue<Widget> widgetQueue;
-	private int threshold = 10;
 	private int maxBatchesToMake = 2;
 	
 	
@@ -25,10 +24,11 @@ public class WidgetProducer implements Runnable{
 				if(widgetQueue.size() == 0) {
 					int currentCount = 0;
 					System.out.println("...making widgets");
-					while(widgetQueue.size() < threshold) {
+					
+					while(widgetQueue.remainingCapacity() != 0) {
 						widgetQueue.add(new Widget("batch-"+batchesMade+"__widget" + currentCount));
-						currentCount++;
 					}
+					
 					batchesMade++;
 				}
 			}
@@ -41,6 +41,7 @@ public class WidgetProducer implements Runnable{
 			}
 			
 		}
+		System.out.println("produced " + maxBatchesToMake + " batches ");
 		System.out.println("closing shop");
 		
 		widgetProducerOpen.set(false);

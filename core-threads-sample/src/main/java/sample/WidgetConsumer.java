@@ -20,15 +20,15 @@ public class WidgetConsumer implements Runnable {
 	@Override
 	public void run() {
 		try {
-			int eaten= 0;
-			while(widgetProducerOpen.get() == true && eaten < threshold ) {
+			int consumed= 0;
+			while(widgetProducerOpen.get() == true && consumed < threshold ) {
 					System.out.println("WidgetConsumer "+id+" looking for widgets");
 					
 					Widget widget = widgetQueue.poll(3, TimeUnit.SECONDS);
 					if(widget != null) {
 						
 						System.out.println("...consuming");
-						eaten ++;
+						consumed ++;
 						
 							Thread.sleep(new Double(1000 * Math.random()).longValue());
 						
@@ -44,9 +44,10 @@ public class WidgetConsumer implements Runnable {
 					}
 				
 			}
+			System.out.println("end WidgetConsumer "+id + " ...consumed " + consumed);
 		} catch (InterruptedException e) {
 			Thread.currentThread().interrupt();
 		}
-		System.out.println("end WidgetConsumer "+id);
+		
 	}
 }
