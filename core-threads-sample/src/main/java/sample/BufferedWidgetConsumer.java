@@ -26,7 +26,7 @@ public class BufferedWidgetConsumer implements Runnable {
 						System.out.println("[CONSUMER-"+id+"] ...consuming");
 						consumed ++;
 						
-							Thread.sleep(new Double(1000 * Math.random()).longValue());
+							Thread.sleep(new Double(500 * Math.random()).longValue());
 						
 						System.out.println("[CONSUMER-"+id+"] ...consumed");
 					}else {
