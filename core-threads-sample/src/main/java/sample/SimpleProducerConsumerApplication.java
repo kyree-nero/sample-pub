@@ -13,6 +13,10 @@ public class SimpleProducerConsumerApplication {
 	
 	
 	public static void main(String[] args) {
+		new SimpleProducerConsumerApplication().run();
+		
+	}
+	public void run() {
 		AtomicBoolean widgetProducerOpen = new AtomicBoolean(true);
 		ArrayBlockingQueue<Widget> widgetQueue = new ArrayBlockingQueue<Widget>(10);
 		
@@ -32,5 +36,8 @@ public class SimpleProducerConsumerApplication {
 		
 		
 	}
+	
+	
+	
 
 }

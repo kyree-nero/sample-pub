@@ -4,7 +4,8 @@ public class BufferedWidgetConsumer implements Runnable {
 	private WidgetBuffer buffer;
 	
 	private String id;
-	int threshold = 50;
+	private int threshold = 50;
+	private int consumed= 0;
 	
 	public BufferedWidgetConsumer(WidgetBuffer buffer, String id) {
 		this.id = id;
@@ -15,7 +16,7 @@ public class BufferedWidgetConsumer implements Runnable {
 	@Override
 	public void run() {
 		try {
-			int consumed= 0;
+			
 			while(!buffer.isClosed() && consumed < threshold ) {
 					System.out.println("[CONSUMER-"+id+"]  looking for widgets");
 					
@@ -41,4 +42,11 @@ public class BufferedWidgetConsumer implements Runnable {
 		}
 		
 	}
+
+
+	public int getConsumed() {
+		return consumed;
+	}
+	
+	
 }

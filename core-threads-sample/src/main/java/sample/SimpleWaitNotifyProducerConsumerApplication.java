@@ -8,6 +8,10 @@ import java.util.stream.Collectors;
 
 public class SimpleWaitNotifyProducerConsumerApplication {
 	public static void main(String[] args) {
+		new SimpleWaitNotifyProducerConsumerApplication().run();
+		
+	}
+	public Integer run() {
 		WidgetBuffer buffer = new WidgetBuffer(10);
 		
 		List<BufferedWidgetConsumer> consumers = 
@@ -24,6 +28,8 @@ public class SimpleWaitNotifyProducerConsumerApplication {
 		
 		executor.shutdown();
 		
-		
+		return consumers
+				.stream()
+				.collect(Collectors.summingInt(BufferedWidgetConsumer::getConsumed));
 	}
 }
