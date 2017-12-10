@@ -28,13 +28,22 @@ public class SimpleWaitNotifyProducerConsumerApplication {
 		executor.execute(new BufferedWidgetProducer(buffer, amountToProduce ));
 		
 		consumers.stream().forEach(e -> executor.execute(e));
-		
+		executor.shutdown();
+		boolean terminatedGracefully = false;
 		try {
-			executor.awaitTermination(timeout, unit);
+			terminatedGracefully = executor.awaitTermination(timeout, unit);
+			if(terminatedGracefully == false) {
+				List<Runnable> runnables = executor.shutdownNow();
+				System.out.println("---"+runnables.size()+" threads terminated ungracefully---");
+				runnables.stream().forEach(r -> System.out.println(r));
+				System.out.println("---");
+			}else {
+				System.out.println("---all threads terminated gracefully---");
+			}
 		} catch (InterruptedException e1) {
 			e1.printStackTrace();
+			
 		}
-		
 		Integer amountConsumed = consumers
 				.stream()
 				.collect(Collectors.summingInt(BufferedWidgetConsumer::getConsumed));

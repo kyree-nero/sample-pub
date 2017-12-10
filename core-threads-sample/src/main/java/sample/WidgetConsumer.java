@@ -9,6 +9,7 @@ public class WidgetConsumer implements Runnable {
 	private int threshold = 50;
 	private String id;
 	private AtomicBoolean widgetProducerOpen;
+	private int consumed= 0;
 	
 	public WidgetConsumer(AtomicBoolean widgetProducerOpen, ArrayBlockingQueue<Widget> widgetQueue, String id) {
 		this.id = id;
@@ -20,7 +21,7 @@ public class WidgetConsumer implements Runnable {
 	@Override
 	public void run() {
 		try {
-			int consumed= 0;
+			
 			while(widgetProducerOpen.get() == true && consumed < threshold ) {
 					System.out.println("WidgetConsumer "+id+" looking for widgets");
 					
@@ -46,8 +47,15 @@ public class WidgetConsumer implements Runnable {
 			}
 			System.out.println("end WidgetConsumer "+id + " ...consumed " + consumed);
 		} catch (InterruptedException e) {
+			e.printStackTrace();
 			Thread.currentThread().interrupt();
 		}
 		
 	}
+
+
+	public int getConsumed() {
+		return consumed;
+	}
+	
 }

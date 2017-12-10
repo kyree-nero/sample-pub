@@ -39,7 +39,7 @@ public class WidgetBuffer {
 				}else {
 					System.out.println("[CONSUMER-"+id+"][TRIAL:"+tries+"] Widget Consumer waiting");
 					try {
-						widgets.wait(3000);
+						widgets.wait(1000);
 						tries++;
 					} catch (InterruptedException e) {
 						Thread.currentThread().interrupt();
